@@ -24,14 +24,26 @@ Result pages are defined in RESULTS.
 QUESTIONS = [
     {
         "slug": "total-value-of-business-case",
-        "title": "What is the total value of the business case?",
+        "title": "What is the estimated total value of your request?",
         "type": "radio",
         "hint": '<div class="govuk-inset-text">The total value means the whole life cost of the business case including VAT.</div>',
         "help_text": "We ask this first because the value influences whether you need a business case at all. The total value is the whole life cost of the business case, including staffing costs, capital and revenue.",
         "choices": [
             ("below-12k", "Below £12,000"),
-            ("above-12k", "£12,000 or above"),
+            ("between-12k-and-2m", "Between £12,000 and 2m (inclusive)"),
+            ("above-2m")
         ],
+    },
+    {
+        "slug": "part-of-wider-programme-with-existing-fbc",
+        "title": "Is this request part of a wider programme with an existing FBC?",
+        "type": "radio",
+        "hint": '<div class="govuk-inset-text"></div>',
+        "help_text": "",
+        "choices": [
+            ("yes", "Yes"),
+            ("no", "No")
+        ]
     },
     {
         "slug": "new-project-or-programme",
@@ -80,7 +92,7 @@ QUESTIONS = [
         ],
     },
     {
-        "slug": "novel-contentious-or-repercussive",
+        "slug": "novel-repercussive-contentious-hmt-consent",
         "title": "Is it novel, contentious, sets precedent, repercussive or requires HM Treasury consent because of legislation?",
         "type": "radio",
         "hint": '<div class="govuk-inset-text">This includes something that could be deemed unusual, risky or is likely to be challenged.</div>',
@@ -177,40 +189,22 @@ QUESTIONS = [
 
 ROUTING = {
     # work-type branches first
+
+    # <12k needs to be confirmed still on the Mural - leave flow for now
     ("total-value-of-business-case", "below-12k"): "new-project-or-programme",
-    (
-        "total-value-of-business-case",
-        "above-12k",
-    ): "have-you-spoken-to-finance-business-partner",
+    ("total-value-of-business-case", "between-12k-and-2m"): "novel-repercussive-contentious-hmt-consent",
+    ("total-value-of-business-case", "above-2m"): "calculate-result",
+
     ("new-project-or-programme", "*"): "where-is-the-budget-held",
-    (
-        "have-you-spoken-to-finance-business-partner",
-        "yes",
-    ): "is-business-case-less-than-two-million",
-    (
-        "have-you-spoken-to-finance-business-partner",
-        "no",
-    ): "is-business-case-less-than-two-million",
-    (
-        "is-business-case-less-than-two-million",
-        "yes",
-    ): "novel-contentious-or-repercussive",
-    (
-        "is-business-case-less-than-two-million",
-        "no",
-    ): "novel-contentious-or-repercussive",
-    (
-        "novel-contentious-or-repercussive",
-        "no",
-    ): "where-is-the-budget-held",
-    (
-        "novel-contentious-or-repercussive",
-        "yes",
-    ): "where-is-the-budget-held",
-    (
-        "where-is-the-budget-held",
-        "*",
-    ): "calculate-result",
+    ("have-you-spoken-to-finance-business-partner", "yes",): "is-business-case-less-than-two-million",
+    ("have-you-spoken-to-finance-business-partner","no" ): "is-business-case-less-than-two-million",
+    ("is-business-case-less-than-two-million", "yes" ): "novel-repercussive-contentious-hmt-consent",
+    ("is-business-case-less-than-two-million", "no" ): "novel-repercussive-contentious-hmt-consent",
+    
+    ("novel-repercussive-contentious-hmt-consent", "no"): "where-is-the-budget-held",
+    ("novel-repercussive-contentious-hmt-consent", "yes"): "where-is-the-budget-held",
+    
+    ("where-is-the-budget-held", "*"): "calculate-result",
 }
 
 # ---------------------------------------------------------------------------
@@ -251,7 +245,7 @@ def get_next(current_question_slug: str, answer: str) -> str:
 def get_first_question_slug() -> str:
     return QUESTIONS[0]["slug"]
 
-
+# this is only called when calculate-result is the next step, not in general flow
 def get_result_from_answers(answers: dict) -> str:
     """
     Works out which result to show based on the combination of answers.
@@ -262,8 +256,11 @@ def get_result_from_answers(answers: dict) -> str:
     new_project = answers.get("new-project-or-programme")
     spoken_to_fbp = answers.get("have-you-spoken-to-finance-business-partner")
     less_than_2m = answers.get("is-business-case-less-than-two-million")
-    novel = answers.get("novel-contentious-or-repercussive")
+    novel = answers.get("novel-repercussive-contentious-hmt-consent")
     where_is_budget_held = answers.get("where-is-the-budget-held")
+
+    if total_value == "above-2m":
+        return "you-need-to-do-3-stage-process"
 
     # Exit 1
     if total_value == "below-12k" and new_project == "no":
@@ -274,20 +271,21 @@ def get_result_from_answers(answers: dict) -> str:
         return "speak-to-someone-first"
 
     # Exit 3
-    elif total_value == "above-12k" and less_than_2m == "no" and novel == "no":
-        return "you-need-to-start-a-full-business-case"
+    # elif total_value == "above-2m" and novel == "no":
+    #     return "you-need-to-start-a-full-business-case"
 
     # Exit 4
-    elif total_value == "above-12k" and less_than_2m == "yes" and novel == "no":
+    elif total_value == "between-12k-and-2m" and novel == "no":
         return "you-need-to-start-a-business-justification-case"
 
     # Exit 5
-    elif total_value == "above-12k" and less_than_2m == "yes" and novel == "yes":
+    elif total_value == "between-12k-and-2m" and novel == "yes":
         return "you-need-to-start-a-full-business-case-novel-or-complex"
 
     # Exit 5b
-    elif total_value == "above-12k" and less_than_2m == "no" and novel == "yes":
-        return "you-need-to-start-a-full-business-case-novel-or-complex"
+    # elif total_value == "above-2m" and novel == "yes":
+    #     return "you-need-to-start-a-full-business-case-novel-or-complex"
+
 
     else:
         return "we-could-not-find-the-right-process-for-you"
