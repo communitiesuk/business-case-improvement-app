@@ -77,6 +77,7 @@ def create_table(table_type: TableDefinition, doc: Document):
 
     # NOTE: if the last row(s) in a table should be blank, you need to add a blank record in the table def.
     # like this: _CellData(row=2, column=1, paragraphs=[ _ParagraphData()] the row will be taken and accounted for
+    # make sure the Row in the blank record is greater than the last row in the table so it's picked up.
     row_count = max(cell.row for cell in table_data.cells)
     column_count = max(cell.column for cell in table_data.cells)
 
@@ -106,7 +107,7 @@ def create_table(table_type: TableDefinition, doc: Document):
         tbl_cell = tbl.cell(r_idx, c_idx)
         tbl_cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
         
-        # add a paragrpah to the cell, then each run to that paragraph.
+        # add a paragraph to the cell, then each run to that paragraph.
         # doing this allows for multiple formats within the same cell
         for p_idx, p_data in enumerate(cell_data.paragraphs):
             para = tbl_cell.paragraphs[0] if p_idx == 0 else tbl_cell.add_paragraph()
