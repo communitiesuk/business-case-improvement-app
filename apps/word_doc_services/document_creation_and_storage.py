@@ -21,4 +21,3 @@ def save_word_doc(doc: doc, doc_file_name: str):
 
     doc.save(save_location.format(doc_title))
 
-
