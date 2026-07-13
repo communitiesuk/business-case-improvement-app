@@ -12,9 +12,6 @@ def create_table(table_type: TableDefinition, doc: Document, table_footer: str =
         print(f"Table data not found. Skipping. table_type: {table_type.name}")
         return
 
-    # NOTE: if the last row(s) in a table should be blank, you need to add a blank record in the table def
-    # like this: _CellData(row=2, column=1) the row will be taken and accounted for (no paragraphs required).
-    # make sure the Row in the blank record allows for the number of blank cells you need.
     row_count = max(cell.row for cell in table_data.cells)
     column_count = max(cell.column for cell in table_data.cells)
 
