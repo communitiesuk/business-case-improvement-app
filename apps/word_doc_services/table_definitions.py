@@ -163,3 +163,4 @@ TABLE_REGISTRY = [
         ]   
     )
 ]
+

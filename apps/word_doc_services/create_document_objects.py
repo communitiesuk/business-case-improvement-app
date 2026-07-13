@@ -59,3 +59,4 @@ def create_table(table_type: TableDefinition, doc: Document, table_footer: str =
         tbl_footer_paragraph = doc.add_paragraph()
         tbl_footer_paragraph.paragraph_format.space_before = 0
         add_text_with_default_formatting(tbl_footer_paragraph, table_footer)
+
