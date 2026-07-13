@@ -7,6 +7,7 @@ from docx.shared import Cm
 class TableDefinition(IntEnum):
     DEVELOP_AND_SUPPORT_PROPOSAL = auto()
     EXPECTED_BENEFITS = auto()
+    SINGLE_CELL_TEXT_BOX = auto()
 
 @dataclass
 class _TextRunData:
@@ -24,7 +25,6 @@ class _CellData:
     column: int
     paragraphs: list[_ParagraphData] = field(default_factory=list)
 
-# using Cm not INCHES here to more easier map from existing tables in the doc we're copying
 @dataclass
 class _TableContent:
     definition: TableDefinition
@@ -33,6 +33,7 @@ class _TableContent:
     cells: list[_CellData] = field(default_factory=list)
 
 # Each table definition should be added here
+# Width of table total is 15.9cm currently
 TABLE_REGISTRY = [
     _TableContent(
         definition=TableDefinition.DEVELOP_AND_SUPPORT_PROPOSAL,
@@ -124,7 +125,7 @@ TABLE_REGISTRY = [
     _TableContent(
         definition=TableDefinition.EXPECTED_BENEFITS,
         row_heights=[Cm(1.27), Cm(1.27)],
-        column_widths=[Cm(5.29), Cm(5.29), Cm(5.29)],
+        column_widths=[Cm(5.3), Cm(5.3), Cm(5.3)],
         cells=[
             _CellData(row=1, column=1, paragraphs=[
                 _ParagraphData(runs=[
@@ -150,9 +151,15 @@ TABLE_REGISTRY = [
                     )
                 ])
             ]),
-            _CellData(row=2, column=1, paragraphs=[
-                _ParagraphData()
-            ])
+            _CellData(row=2, column=1)
         ]
+    ),
+    _TableContent(
+        definition=TableDefinition.SINGLE_CELL_TEXT_BOX,
+        row_heights=[Cm(2.5)],
+        column_widths=[Cm(15.9)],
+        cells=[
+            _CellData(row=1, column=1)
+        ]   
     )
 ]

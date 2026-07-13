@@ -2,13 +2,9 @@ from docx import Document
 from docx.document import Document as doc #use 'as' here or it gets confused between imports from docx and docx.document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-from .table_definitions import TableDefinition, TABLE_REGISTRY
-from .templated_sections import create_what_youll_be_asked_section, create_before_you_start_section
-
 from uuid import uuid4
 
-standard_font_name: str = 'Aptos'
-# this is obviously a place holder for an actual location
+# this is a place holder for an actual location
 save_location: str = '/Users/WordDocuments/{}.docx'
 
 def create_word_document(doc_title: str):
@@ -17,10 +13,6 @@ def create_word_document(doc_title: str):
     
     document = Document()
     document.add_heading(f"This is your business justification case template for {doc_title}", 0).alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    create_what_youll_be_asked_section(document)
-    create_before_you_start_section(document)
-
 
 def save_word_doc(doc: doc, doc_file_name: str):
     doc_id = str(uuid4())
