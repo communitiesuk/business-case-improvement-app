@@ -6,7 +6,7 @@ from .table_definitions import TABLE_REGISTRY, TableDefinition
 from .formatted_sections import add_text_with_default_formatting, aptos_font_name
 
 def create_table(table_type: TableDefinition, doc: Document, table_footer: str = ""):
-    table_data = next((item for item in TABLE_REGISTRY if item.definition == table_type))
+    table_data = next((item for item in TABLE_REGISTRY if item.definition == table_type), None)
 
     if not table_data or not table_data.cells:
         print(f"Table data not found. Skipping. table_type: {table_type.name}")
