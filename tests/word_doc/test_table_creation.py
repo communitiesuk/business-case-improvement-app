@@ -59,3 +59,4 @@ def test_create_table_method_can_add_a_table_for_each_table_definition():
 
     # assert
     assert tbl_count == len(test_doc.tables)
+
