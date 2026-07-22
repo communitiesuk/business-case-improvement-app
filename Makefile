@@ -1,6 +1,7 @@
 -include .env
 
 setup:
+	poetry install && \
 	echo "Setting up static assets..." && \
 	echo "WARNING: THIS IS A DESTRUCTIVE ACTION. It will delete any changes you have made in ./static." && \
 	echo "Press enter to continue or ctrl+c to cancel." && \
@@ -9,7 +10,7 @@ setup:
 	rm -rf static/hmrc-frontend static/govuk static/govuk-frontend static/images && \
 	mkdir -p static/hmrc-frontend && \
 	npm i && \
-	mv ./node_modules/hmrc-frontend/hmrc/govuk ./static/govuk && \
+	mv ./node_modules/hmrc-frontend/hmrc/govuk ./static/hmrc-frontend/govuk && \
 	mv ./node_modules/hmrc-frontend/hmrc/hmrc-frontend-*.min.css ./static/hmrc-frontend/hmrc-frontend.min.css && \
 	poetry run python scripts/setup_govuk_frontend.py
 
@@ -17,6 +18,10 @@ run:
 	docker compose up -d
 
 run-build:
+	docker compose up -d --build
+
+run-build-nocache:
+	docker compose build --no-cache
 	docker compose up -d --build
 
 run-extras:
@@ -27,6 +32,9 @@ test:
 
 stop:
 	docker compose --profile dev-extras down
+
+full-reset:
+	docker compose --profile dev-extras down --volumes --remove-orphans
 
 ecr-push-dev:
 	aws ecr get-login-password --region eu-west-2 --profile bpi-dev | \
