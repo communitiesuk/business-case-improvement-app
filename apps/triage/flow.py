@@ -315,7 +315,7 @@ ROUTING = {
     (are_you_procuring_consulting_and_professional_services, "*"): we_want_to_continue_improving_our_service,
     (we_want_to_continue_improving_our_service, "*"): give_your_bjc_a_name,
     (give_your_bjc_a_name, "*"): provide_a_high_level_summary,
-    (provide_a_high_level_summary, "" if does_request_involve_anything_digital else ""): "calculate-result",
+    (provide_a_high_level_summary, "*"): "calculate-result"
 }
 
 # ---------------------------------------------------------------------------
@@ -375,6 +375,13 @@ def get_result_from_answers(answers: dict) -> str:
     if total_value == "above-2m":
         return "you-need-to-do-3-stage-process"
 
+    if total_value == "between-12k-and-2m":
+            if is_procurement_case(answers):
+                return template_procurement_bjc
+            else:
+                return "we-could-not-find-the-right-process-for-you"
+
+
     # Exit early for you do not need a BC
     if (total_value == "below-12k" and new_project == "no") or request_involve_anything_digital is not None:
         return "you-do-not-need-a-business-case"
@@ -390,6 +397,28 @@ def get_result_from_answers(answers: dict) -> str:
     # Exit 
     elif total_value == "between-12k-and-2m" and novel == "yes":
         return "you-need-to-start-a-full-business-case-novel-or-complex"
-
+    
     else:
         return "we-could-not-find-the-right-process-for-you"
+
+# answers.get( , None)
+def is_procurement_case(answers: dict) -> bool:
+    is_novel_check = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no" # No
+    is_pilot_check = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no" # No
+    is_existing_check = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
+
+    # any answers passes currently
+    connected_check = True # answers.get(any_other_business_cases_that_are_connected_to_this_work, None)
+
+    option_check = answers.get(which_option_describes_what_you_are_trying_to_do, None) == procure_goods_and_services_from_third_party
+    
+    situation_check: bool = (answers.get(which_best_describes_your_situation, None) == spend_on_corporate_activities or
+                             answers.get(which_best_describes_your_situation, None) == procuring_something_else)
+
+    # check for digital not currently in this flow
+    return (is_novel_check and
+            is_pilot_check and
+            is_existing_check and
+            connected_check and
+            option_check and
+            situation_check)
