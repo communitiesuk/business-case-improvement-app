@@ -18,6 +18,7 @@ class BusinessCaseTriageResponse(models.Model):
     started_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     completed_at = models.DateTimeField(null=True, blank=True)
+    id = models.CharField(max_length=100, blank=True, default="")
 
     class Meta:
         ordering = ["-started_at"]
@@ -48,7 +49,8 @@ class BusinessCase(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
-
+    business_case_triage_response_id = models.CharField(max_length=100, blank=True, default="")
+    
     class Meta:
         ordering = ["-created_at"]
 
