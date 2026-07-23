@@ -293,8 +293,6 @@ QUESTIONS = [
 
 ROUTING = {
     # work-type branches first
-
-    # <12k needs to be confirmed still on the Mural - leave flow for now
     (total_value_of_business_case, "below-12k"): part_of_wider_programme_with_existing_fbc,
     (total_value_of_business_case, "between-12k-and-2m"): novel_repercussive_contentious_hmt_consent,
     (total_value_of_business_case, "above-2m"): "calculate-result",
@@ -356,6 +354,7 @@ def get_next(current_question_slug: str, answer: str) -> str:
 def get_first_question_slug() -> str:
     return QUESTIONS[0]["slug"]
 
+
 # this is only called when calculate-result is the next step, not in general flow
 def get_result_from_answers(answers: dict) -> str:
     """
@@ -366,12 +365,8 @@ def get_result_from_answers(answers: dict) -> str:
     total_value = answers.get(total_value_of_business_case)
     new_project = answers.get(part_of_wider_programme_with_existing_fbc)
     request_involve_anything_digital = answers.get(does_request_involve_anything_digital, None)
-    is_this_request_a_pilot = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal)
-    spoken_to_fbp = answers.get("have-you-spoken-to-finance-business-partner")
-    less_than_2m = answers.get("is-business-case-less-than-two-million")
     novel = answers.get(novel_repercussive_contentious_hmt_consent)
-    where_is_budget_held = answers.get(where_is_the_budget_held)
-
+    
     if total_value == "above-2m":
         return "you-need-to-do-3-stage-process"
 
@@ -380,7 +375,6 @@ def get_result_from_answers(answers: dict) -> str:
                 return you_need_to_start_a_business_justification_case
             else:
                 return "we-could-not-find-the-right-process-for-you"
-
 
     # Exit early for you do not need a BC
     if (total_value == "below-12k" and new_project == "no") or request_involve_anything_digital is not None:
@@ -401,7 +395,7 @@ def get_result_from_answers(answers: dict) -> str:
     else:
         return "we-could-not-find-the-right-process-for-you"
 
-# answers.get( , None)
+
 def is_procurement_case(answers: dict) -> bool:
     is_novel_check = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no" # No
     is_pilot_check = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no" # No
@@ -422,3 +416,4 @@ def is_procurement_case(answers: dict) -> bool:
             connected_check and
             option_check and
             situation_check)
+
