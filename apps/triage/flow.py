@@ -22,7 +22,7 @@ If there's no specific match for an answer, the fallback key (slug, "*") is used
 Result pages are defined in RESULTS.
 """
 
-# Types: Radio, Checkbox, Select
+# Types: Radio, Checkbox, Select, Input
 QUESTIONS = [
     {
         "slug": total_value_of_business_case,

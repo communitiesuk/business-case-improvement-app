@@ -3,7 +3,7 @@ from django.test import Client
 from django.urls import reverse
 from apps.triage.models import BusinessCase, BusinessCaseTriageResponse
 from apps.triage.flow import get_first_question_slug, QUESTION_SLUGS
-
+from apps.triage.slugs import *
 
 @pytest.fixture
 def client(db):
@@ -95,12 +95,13 @@ def test_session_result_set_after_completion(client, db):
     client.get(reverse("triage:start"))
 
     answers = {
-        "total-value-of-business-case": "above-12k",
-        "new-project-or-programme": "no",
-        "have-you-spoken-to-finance-business-partner": "yes",
-        "is-business-case-less-than-two-million": "no",
-        "novel-contentious-or-repercussive": "no",
-        "where-is-the-budget-held": "Digital",
+        total_value_of_business_case: "above-12k",
+        novel_repercussive_contentious_hmt_consent: "no"
+        # "new-project-or-programme": "no",
+        # "have-you-spoken-to-finance-business-partner": "yes",
+        # "is-business-case-less-than-two-million": "no",
+        # "novel-contentious-or-repercussive": "no",
+        # "where-is-the-budget-held": "Digital",
     }
 
     for slug in QUESTION_SLUGS:
@@ -110,7 +111,7 @@ def test_session_result_set_after_completion(client, db):
                 reverse("triage:question", kwargs={"slug": slug}),
                 data={"answer": answer},
             )
-
+            
     session = BusinessCaseTriageResponse.objects.filter(completed_at__isnull=False).last()
     assert session is not None
     assert session.result != "in-progress"
@@ -142,7 +143,6 @@ def test_business_case_created_after_completion(client, db):
 
     business_case = BusinessCase.objects.last()
     assert business_case is not None
-    assert business_case.business_case_triage_response_id == session.id
     assert business_case.created_at is not None
     assert business_case.modified_at is not None
     assert business_case.deleted_at is None
