@@ -377,7 +377,7 @@ def get_result_from_answers(answers: dict) -> str:
 
     if total_value == "between-12k-and-2m":
             if is_procurement_case(answers):
-                return template_procurement_bjc
+                return you_need_to_start_a_business_justification_case
             else:
                 return "we-could-not-find-the-right-process-for-you"
 
