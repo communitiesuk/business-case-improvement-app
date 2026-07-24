@@ -94,11 +94,6 @@ QUESTIONS = [
         ]
     },
     {
-        "slug": where_is_the_budget_held,
-        "title": "Write where the budget is held",
-        "type": "input",
-    },
-    {
         "slug": is_this_a_retrospective_case,
         "title": "Is this a retrospective case?",
         "type": "radio",
@@ -220,7 +215,7 @@ QUESTIONS = [
         ],
     },
     {
-        "slug": "where-is-the-budget-held",
+        "slug": where_is_the_budget_held,
         "title": "Where is the budget held?",
         "type": "select",
         "hint": Markup(
@@ -241,7 +236,7 @@ QUESTIONS = [
                 "Departmental Strategy & Governance",
             ),
             ("Deputy Prime Minister's Data Unit", "Deputy Prime Minister's Data Unit"),
-            ("Digital", "Digital"),
+            (digital, digital),
             ("Digital Process Improvement", "Digital Process Improvement"),
             ("Elections Directorate", "Elections Directorate"),
             ("Executive Team", "Executive Team"),
@@ -397,9 +392,11 @@ def get_result_from_answers(answers: dict) -> str:
 
 
 def is_procurement_case(answers: dict) -> bool:
-    is_novel_check = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no" # No
-    is_pilot_check = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no" # No
+    # if a _check passes it is set to true, even if the _check itself might be checking something is false
+    is_novel_check = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
+    is_pilot_check = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no"
     is_existing_check = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
+    is_digital_check = answers.get(where_is_the_budget_held, None) != digital
 
     # any answers passes currently
     connected_check = True # answers.get(any_other_business_cases_that_are_connected_to_this_work, None)
@@ -409,10 +406,10 @@ def is_procurement_case(answers: dict) -> bool:
     situation_check: bool = (answers.get(which_best_describes_your_situation, None) == spend_on_corporate_activities or
                              answers.get(which_best_describes_your_situation, None) == procuring_something_else)
 
-    # check for digital not currently in this flow
     return (is_novel_check and
             is_pilot_check and
             is_existing_check and
+            is_digital_check and
             connected_check and
             option_check and
             situation_check)
