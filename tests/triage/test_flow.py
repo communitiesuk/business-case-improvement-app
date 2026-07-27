@@ -6,6 +6,7 @@ from apps.triage.flow import (
     get_first_question_slug,
     QUESTION_SLUGS,
     QUESTIONS,
+    DIGITAL_STRING
 )
 
 from apps.triage.slugs import *
@@ -161,7 +162,7 @@ def test_procurement_routes_including_digital_routes_away_from_procurement():
         "no",
         "no",
         "Any Answer",
-        digital,
+        DIGITAL_STRING,
         "Any Answer",
         procure_goods_and_services_from_third_party,
         spend_on_corporate_activities,

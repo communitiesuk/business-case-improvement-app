@@ -1,5 +1,5 @@
 from markupsafe import Markup
-
+from typing import Final
 from .slugs import *
 
 """
@@ -21,6 +21,9 @@ If there's no specific match for an answer, the fallback key (slug, "*") is used
 
 Result pages are defined in RESULTS.
 """
+
+# because routing requires very specific check, I'm setting here to reduce likelihood of unknowing changes
+DIGITAL_STRING: Final[str] = "Digital"
 
 # Types: Radio, Checkbox, Select, Input
 QUESTIONS = [
@@ -236,7 +239,7 @@ QUESTIONS = [
                 "Departmental Strategy & Governance",
             ),
             ("Deputy Prime Minister's Data Unit", "Deputy Prime Minister's Data Unit"),
-            (digital, digital),
+            (DIGITAL_STRING, DIGITAL_STRING),
             ("Digital Process Improvement", "Digital Process Improvement"),
             ("Elections Directorate", "Elections Directorate"),
             ("Executive Team", "Executive Team"),
@@ -392,25 +395,20 @@ def get_result_from_answers(answers: dict) -> str:
 
 
 def is_procurement_case(answers: dict) -> bool:
-    # if a _check passes it is set to true, even if the _check itself might be checking something is false
-    is_novel_check = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
-    is_pilot_check = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no"
-    is_existing_check = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
-    is_digital_check = answers.get(where_is_the_budget_held, None) != digital
+    is_not_novel = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
+    is_not_pilot = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no"
+    is_not_existing_programme = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
+    is_not_digital_budget = answers.get(where_is_the_budget_held, None) != DIGITAL_STRING
 
-    # any answers passes currently
-    connected_check = True # answers.get(any_other_business_cases_that_are_connected_to_this_work, None)
-
-    option_check = answers.get(which_option_describes_what_you_are_trying_to_do, None) == procure_goods_and_services_from_third_party
+    is_tring_to_procure_from_third_party = answers.get(which_option_describes_what_you_are_trying_to_do, None) == procure_goods_and_services_from_third_party
     
-    situation_check: bool = (answers.get(which_best_describes_your_situation, None) == spend_on_corporate_activities or
+    is_corporate_spend_or_procurement: bool = (answers.get(which_best_describes_your_situation, None) == spend_on_corporate_activities or
                              answers.get(which_best_describes_your_situation, None) == procuring_something_else)
 
-    return (is_novel_check and
-            is_pilot_check and
-            is_existing_check and
-            is_digital_check and
-            connected_check and
-            option_check and
-            situation_check)
+    return (is_not_novel and
+            is_not_pilot and
+            is_not_existing_programme and
+            is_not_digital_budget and
+            is_tring_to_procure_from_third_party and
+            is_corporate_spend_or_procurement)
 

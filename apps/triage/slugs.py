@@ -23,5 +23,3 @@ we_want_to_continue_improving_our_service: str = "we-want-to-continue-mproving-o
 provide_a_high_level_summary: str = "provide-a-high-level-summary"
 you_need_to_start_a_business_justification_case: str = "you-need-to-start-a-business-justification-case"
 
-# because routing requires this very specific check, I'm setting here to reduce likelihood of unknowing changes
-digital: str = "Digital"
