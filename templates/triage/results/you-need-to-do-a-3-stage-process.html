@@ -1,4 +1,5 @@
 {% extends "layouts/base_layout.html" %}
+{% from "govuk_frontend_jinja/templates/components/accordion/macro.html" import govukAccordion %}
 
 {% block main_content %}
 
@@ -59,9 +60,75 @@
     <li>whether approval authority has already been delegated</li>
 </ul>
 
-<p>
-    
-</p>
+{{ govukAccordion({
+    "id": "accronym-accordion",
+    "items": [
+        {
+            heading: {
+                html: '<h3 class='govuk-heading-s'>RDEL</h3>'
+            },
+            content: {
+                html: '<p class="govuk-body">
+                    Resource Departmental Expenditure Limits (money that is spent on day-to-day resources and administration costs, usually spent within one financial year)
+                </p>'
+            }
+        },
+        {
+            heading:{
+                html: '<h3 class='govuk-heading-s'>CDEL</h3>'
+            },
+            content: {
+                html: '<p>
+                    Capital Departmental Expenditure Limits (money that is spent on investment and things that will create growth in the future)
+                </p>'
+            }
+        },
+        {
+            heading: {
+                html: '<h3 class='govuk-heading-s'>CDEL FT</h3>'
+            },
+            content: {
+                html: '<p>
+                    Capital Departmental Expenditure Limit Financial Transactions (Capital funding that is repaid or recovered, like a loan or investment)
+                </p>' 
+            }
+        },
+        {
+            heading: {
+                html: '<h3 class='govuk-heading-s'>RDEL Admin</h3>'
+            },
+            content: { 
+                html: '<p>
+                    Resource Departmental Expenditure Limits for Administration (Running and administrative costs)
+                </p>'
+            }
+        },
+        {
+            heading: {
+                html: '<h3 class='govuk-heading-s'>Local Gov DEL</h3>'
+            },
+            content: {
+                html: '<p>
+                    Local Government Departmental Expenditure Limits for Local Authorities
+                </p>'
+            }
+        },
+        {
+            heading: {
+                html: '<h3 class='govuk-heading-s'>S31 grant</h3>'
+            },
+            content: {
+                html: '<p>
+                    A section 31 grant is money a government department gives to a local authority using powers in Section 31 of the Local Government Act 2003
+                </p>'
+            }
+        }
+    ]
+})}}
+
+
+<p>IMPORTANT BIT NEXT</p>
+
 
 
 
