@@ -400,7 +400,7 @@ def is_procurement_case(answers: dict) -> bool:
     is_not_existing_programme = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
     is_not_digital_budget = answers.get(where_is_the_budget_held, None) != DIGITAL_STRING
 
-    is_tring_to_procure_from_third_party = answers.get(which_option_describes_what_you_are_trying_to_do, None) == procure_goods_and_services_from_third_party
+    is_trying_to_procure_from_third_party = answers.get(which_option_describes_what_you_are_trying_to_do, None) == procure_goods_and_services_from_third_party
     
     is_corporate_spend_or_procurement: bool = (answers.get(which_best_describes_your_situation, None) == spend_on_corporate_activities or
                              answers.get(which_best_describes_your_situation, None) == procuring_something_else)
@@ -409,6 +409,6 @@ def is_procurement_case(answers: dict) -> bool:
             is_not_pilot and
             is_not_existing_programme and
             is_not_digital_budget and
-            is_tring_to_procure_from_third_party and
+            is_trying_to_procure_from_third_party and
             is_corporate_spend_or_procurement)
 
