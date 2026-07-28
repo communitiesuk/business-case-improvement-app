@@ -367,7 +367,6 @@ def get_result_from_answers(answers: dict) -> str:
     
     if total_value == "above-2m":
         return "you-need-to-follow-a-three-stage-process"
-        #return "you"
 
     if total_value == "between-12k-and-2m":
             if is_procurement_case(answers):
