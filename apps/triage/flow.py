@@ -405,7 +405,7 @@ def determine_is_less_than_12k_exit_route(answers: dict) -> str:
         involves_digital: bool = answers.get(does_request_involve_anything_digital, None) == "yes"
 
         if involves_digital != None:
-            return "do-not-need-a-business-case-send-email" if involves_digital else "do-not-need-a-business-case-no-programme-not-digital"
+            return "do-not-need-a-business-case-no-programme-digital" if involves_digital else "do-not-need-a-business-case-no-programme-not-digital"
 
     return "we-could-not-find-the-right-process-for-you"
 
