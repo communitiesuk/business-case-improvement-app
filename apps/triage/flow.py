@@ -53,7 +53,7 @@ QUESTIONS = [
         "slug": request_part_of_wider_programme,
         "title": "Is this request part of a wider programme with an existing FBC?",
         "type": "radio",
-        "help_text": "We ask this to make sure spend is routed through the correct approvals process.",
+        "help_text": "We ask this to make sure spend is routed through the correct approvals process. If this work is part of a wider piece of activity, or if multiple related pieces of spend together exceed approval thresholds, you should answer Yes, even if this individual business case is for a smaller amount.",
         "choices": [
             ("yes", "Yes"),
             ("no", "No"),
