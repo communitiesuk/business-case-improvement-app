@@ -370,7 +370,7 @@ def get_result_from_answers(answers: dict) -> str:
 
     if total_value == "between-12k-and-2m":
             if is_commission_research(answers):
-                return 'speak-to-someone-first'
+                return 'you-need-to-speak-to-the-research-team'
             
             if is_procurement_case(answers):
                 return you_need_to_start_a_business_justification_case

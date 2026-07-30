@@ -204,7 +204,7 @@ def test_commission_research_routing():
     result = get_routing_exit_page(responses)
 
     # assert
-    assert result == 'speak-to-someone-first'
+    assert result == 'you-need-to-speak-to-the-research-team'
 
 
 '''
