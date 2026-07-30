@@ -428,10 +428,6 @@ def is_three_stage_process_novel_or_pilot(answers: dict) -> bool:
     return True if is_novel else (not is_novel and is_pilot)
 
 
-
-        
-
-
 def is_procurement_case(answers: dict) -> bool:
     is_not_novel = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
     is_not_pilot = answers.get(is_this_request_a_pilot, None) == "no"

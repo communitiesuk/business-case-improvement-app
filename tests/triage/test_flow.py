@@ -200,6 +200,7 @@ def test_procurement_routes_including_digital_routes_away_from_procurement():
     # assert
     assert result == "we-could-not-find-the-right-process-for-you"
 
+
 def test_3_stage_process_for_novel():
     # arrange
     responses = [
