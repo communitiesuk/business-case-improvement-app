@@ -108,11 +108,13 @@ def test_less_than_12k_no_programme_digital_routing():
         "no",
         "yes"
     ]
+
     #act
     result = get_routing_exit_page(responses)
 
     #assert
     assert result == "do-not-need-a-business-case-no-programme-digital"
+
 
 def test_procurement_routes_to_calculate_result_1():
     # arrange
@@ -185,15 +187,24 @@ def test_procurement_routes_including_digital_routes_away_from_procurement():
     assert result == "we-could-not-find-the-right-process-for-you"
 
 
+'''
+Provide a list of triage responses, starting from the cost.
+This will then go through each response to reach the end of the journey and provide
+the exit screen that was determined
+'''
 def get_routing_exit_page(responses: list) -> str:
     counter: int = 0
     step: str = total_value_of_business_case
     answers: dict = {}
-   
-    while step != "calculate-result":
-            answers[step] = responses[counter]
-            step = get_next(step, responses[counter])
-            counter += 1
 
-    result = get_result_from_answers(answers)
+    try:
+        while step != "calculate-result":
+                answers[step] = responses[counter]
+                step = get_next(step, responses[counter])
+                counter += 1
+
+        result = get_result_from_answers(answers)
+    except:
+        result = ""
+
     return result
