@@ -101,6 +101,20 @@ def test_less_than_12k_no_programme_not_digital_routing():
     assert result == "do-not-need-a-business-case-no-programme-not-digital"
 
 
+def test_less_than_12k_existing_programme_routing():
+    # arrange
+    responses = [
+        "below-12k",
+        "yes",
+    ]
+
+    # act
+    result = get_routing_exit_page(responses)
+
+    # assert
+    assert result == "speak-to-someone-first"
+
+
 def test_less_than_12k_no_programme_digital_routing():
     # arrange
     responses = [

@@ -23,6 +23,11 @@ def test_3_stage_process_page_loads(client):
     assert resp.status_code == 200
 
 
+def test_spewak_to_someone_first_page_loads(client):
+    resp = client.get(reverse("triage:result", kwargs={"slug": "speak-to-someone-first"}))
+    assert resp.status_code == 200
+
+
 def test_below_12k_no_programme_not_digital_loads(client):
     resp = client.get(reverse("triage:result", kwargs={"slug": "do-not-need-a-business-case-no-programme-not-digital"}))
     assert resp.status_code == 200
