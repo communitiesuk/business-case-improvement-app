@@ -230,6 +230,26 @@ def test_3_stage_process_for_pilot():
     assert result == "you-need-to-follow-a-three-stage-process-novel-or-pilot", f"result was {result}"
 
 
+def test_commission_research_routing():
+    # arrange
+    responses = [
+        "between-12k-and-2m",
+        "no",
+        "no",
+        "no",
+        "Any Answer",
+        DIGITAL_STRING,
+        "Any Answer",
+        commission_research
+    ]
+
+    # act
+    result = get_routing_exit_page(responses)
+
+    # assert
+    assert result == 'you-need-to-speak-to-the-research-team'
+
+
 '''
 Provide a list of triage responses, starting from the cost.
 This will then go through each response to reach the end of the journey and provide
