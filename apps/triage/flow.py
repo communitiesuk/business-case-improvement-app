@@ -22,8 +22,9 @@ If there's no specific match for an answer, the fallback key (slug, "*") is used
 Result pages are defined in RESULTS.
 """
 
-# because routing requires very specific check, I'm setting here to reduce likelihood of unknowing changes
+# because routing requires very specific checks, I'm setting here to reduce likelihood of unknowing changes
 DIGITAL_STRING: Final[str] = "Digital"
+BETWEEN_12K_AND_2M_STRING: Final[str] = "between-12k-and-2m"
 
 # Types: Radio, Checkbox, Select, Input
 QUESTIONS = [
@@ -116,7 +117,7 @@ QUESTIONS = [
         ]
     },
     {
-        "slug": which_best_describes_your_situation,
+        "slug": which_best_describes_your_spend,
         "title": "Which best describes your situation?",
         "type": "radio",
         "choices": [
@@ -305,9 +306,9 @@ ROUTING = {
     (where_is_the_budget_held, "*"): is_this_a_retrospective_case,
     (is_this_a_retrospective_case, "*"): which_option_describes_what_you_are_trying_to_do,
     (which_option_describes_what_you_are_trying_to_do, commission_research): "calculate-result",
-    (which_option_describes_what_you_are_trying_to_do, procure_goods_and_services_from_third_party): which_best_describes_your_situation,
-    (which_best_describes_your_situation, spend_on_corporate_activities): give_your_bjc_a_name,
-    (which_best_describes_your_situation, procuring_something_else): are_you_procuring_consulting_and_professional_services,
+    (which_option_describes_what_you_are_trying_to_do, procure_goods_and_services_from_third_party): which_best_describes_your_spend,
+    (which_best_describes_your_spend, spend_on_corporate_activities): give_your_bjc_a_name,
+    (which_best_describes_your_spend, procuring_something_else): are_you_procuring_consulting_and_professional_services,
     (are_you_procuring_consulting_and_professional_services, "*"): we_want_to_continue_improving_our_service,
     (we_want_to_continue_improving_our_service, "*"): give_your_bjc_a_name,
     (give_your_bjc_a_name, "*"): provide_a_high_level_summary,
@@ -361,43 +362,23 @@ def get_result_from_answers(answers: dict) -> str:
     Returns a result slug.
     """
     total_value = answers.get(total_value_of_business_case)
-    new_project = answers.get(part_of_wider_programme_with_existing_fbc)
-    request_involve_anything_digital = answers.get(does_request_involve_anything_digital, None)
-    novel = answers.get(novel_repercussive_contentious_hmt_consent)
-    
+
     if total_value == "above-2m":
         return "you-need-to-follow-a-three-stage-process"
 
-    if total_value == "between-12k-and-2m":
+    if total_value == BETWEEN_12K_AND_2M_STRING:
             if is_commission_research(answers):
                 return 'you-need-to-speak-to-the-research-team'
             
-            if is_procurement_case(answers):
-                return you_need_to_start_a_business_justification_case
+            if full_12k_to_2m_flow_completed(answers):
+                return get_12k_to_2m_route_exit(answers)
             else:
                 return "we-could-not-find-the-right-process-for-you"
 
     if total_value == "below-12k":
         return determine_is_less_than_12k_exit_route(answers)
 
-    # Exit early for you do not need a BC
-    if (total_value == "below-12k" and new_project == "no") or request_involve_anything_digital is not None:
-        return "you-do-not-need-a-business-case"
-
-    # Exit 
-    elif total_value == "below-12k" and new_project == "yes":
-        return "speak-to-someone-first"
-
-    # Exit 
-    elif total_value == "between-12k-and-2m" and novel == "no":
-        return "you-need-to-start-a-business-justification-case"
-
-    # Exit 
-    elif total_value == "between-12k-and-2m" and novel == "yes":
-        return "you-need-to-start-a-full-business-case-novel-or-complex"
-    
-    else:
-        return "we-could-not-find-the-right-process-for-you"
+    return "we-could-not-find-the-right-process-for-you"
 
 
 def determine_is_less_than_12k_exit_route(answers: dict) -> str:
@@ -411,14 +392,6 @@ def determine_is_less_than_12k_exit_route(answers: dict) -> str:
             return "do-not-need-a-business-case-no-programme-digital" if involves_digital else "do-not-need-a-business-case-no-programme-not-digital"
 
     return "we-could-not-find-the-right-process-for-you"
-
-def is_less_than_12k_do_not_need_a_bc(answers: dict):
-    return (answers.get(part_of_wider_programme_with_existing_fbc, None) == "no" and 
-            answers.get(does_request_involve_anything_digital, None) == "no")
-
-def is_less_than_12k_do_not_need_a_bc_send_email(answers: dict):
-    return (answers.get(part_of_wider_programme_with_existing_fbc, None) == "no" and 
-            answers.get(does_request_involve_anything_digital, None) == "yes")
 
 
 def is_commission_research(answers: dict) -> bool:
@@ -436,21 +409,52 @@ def is_commission_research(answers: dict) -> bool:
             is_trying_to_commission_research)
     
 
-def is_procurement_case(answers: dict) -> bool:
+'''
+Check all the answers that will lead from 12k-2m cost to the end, to determine
+if we reached the end of the journey
+'''
+def full_12k_to_2m_flow_completed(answers: dict) -> bool:
     is_not_novel = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
     is_not_pilot = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no"
     is_not_existing_programme = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
-    is_not_digital_budget = answers.get(where_is_the_budget_held, None) != DIGITAL_STRING
+    budget_confirmed = answers.get(where_is_the_budget_held, None) != ""
 
-    is_trying_to_procure_from_third_party = answers.get(which_option_describes_what_you_are_trying_to_do, None) == procure_goods_and_services_from_third_party
+    what_youre_trying_to_do: str | None = answers.get(which_option_describes_what_you_are_trying_to_do, None)
+    what_youre_trying_to_do_follows_procurement_route: bool = (
+        what_youre_trying_to_do == procure_goods_and_services_from_third_party or
+        what_youre_trying_to_do == hire_contracted_workers_to_fill_temporary_capacity_gap
+    )
     
-    is_corporate_spend_or_procurement: bool = (answers.get(which_best_describes_your_situation, None) == spend_on_corporate_activities or
-                             answers.get(which_best_describes_your_situation, None) == procuring_something_else)
+    describe_your_spend_follows_procurement_route: bool = (
+        answers.get(which_best_describes_your_spend, None) == spend_on_corporate_activities or
+        answers.get(which_best_describes_your_spend, None) == procuring_something_else
+    )
+
+    # basically checking users haven't skipped ahead somehow and have completed triage
+    bjc_name_confirmed = answers.get(give_your_bjc_a_name, None) != ""
+    high_level_summary_confirmed = answers.get(provide_a_high_level_summary, None) != ""
 
     return (is_not_novel and
             is_not_pilot and
             is_not_existing_programme and
-            is_not_digital_budget and
-            is_trying_to_procure_from_third_party and
-            is_corporate_spend_or_procurement)
+            budget_confirmed and
+            what_youre_trying_to_do_follows_procurement_route and
+            describe_your_spend_follows_procurement_route and
+            bjc_name_confirmed and
+            high_level_summary_confirmed)
 
+'''
+Once we know it's following the 12k-2m cost route, send here to return the specific
+exit required.
+No need to re-check the routing
+'''
+def get_12k_to_2m_route_exit(answers: dict) -> str:
+    # this routing is for next sprint
+    if answers.get(where_is_the_budget_held, None) == DIGITAL_STRING:
+        return "we-could-not-find-the-right-process-for-you"
+
+    if answers.get(where_is_the_budget_held, None) != DIGITAL_STRING:
+        return "you-need-to-start-a-business-justification-case"
+
+    return "we-could-not-find-the-right-process-for-you"
+    

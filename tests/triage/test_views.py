@@ -28,6 +28,11 @@ def test_below_12k_no_programme_not_digital_loads(client):
     assert resp.status_code == 200
 
 
+def test_procurement_route_digital_spend_page_loads(client):
+    resp = client.get(reverse("triage:result", kwargs={"slug": "procurement_route_digital_spend"}))
+    assert resp.status_code == 200
+
+
 def test_speak_to_research_team_loads(client):
     resp = client.get(reverse("triage:result", kwargs={"slug": "you-need-to-speak-to-the-research-team"}))
     assert resp.status_code == 200
@@ -120,7 +125,7 @@ def test_procurement_template_route(client, db):
         where_is_the_budget_held: "*",
         is_this_a_retrospective_case: "*",
         which_option_describes_what_you_are_trying_to_do: procure_goods_and_services_from_third_party,
-        which_best_describes_your_situation: spend_on_corporate_activities,
+        which_best_describes_your_spend: spend_on_corporate_activities,
         give_your_bjc_a_name: "*",
         provide_a_high_level_summary: "*"
     }
