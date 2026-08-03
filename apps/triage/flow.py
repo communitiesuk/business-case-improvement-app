@@ -306,6 +306,7 @@ ROUTING = {
     (is_this_a_retrospective_case, "*"): which_option_describes_what_you_are_trying_to_do,
     (which_option_describes_what_you_are_trying_to_do, commission_research): "calculate-result",
     (which_option_describes_what_you_are_trying_to_do, procure_goods_and_services_from_third_party): which_best_describes_your_spend,
+    (which_option_describes_what_you_are_trying_to_do, hire_contracted_workers_to_fill_temporary_capacity_gap): give_your_bjc_a_name,
     (which_best_describes_your_spend, spend_on_corporate_activities): give_your_bjc_a_name,
     (which_best_describes_your_spend, procuring_something_else): are_you_procuring_consulting_and_professional_services,
     (are_you_procuring_consulting_and_professional_services, "*"): we_want_to_continue_improving_our_service,
@@ -461,6 +462,6 @@ def get_procurement_exit(answers: dict) -> str:
             return "exit-to-download-template-procurement-route" 
 
     if best_describes_your_situation == hire_contracted_workers_to_fill_temporary_capacity_gap:
-        "exit-to-download-template-hrbp-contingent-labour-route"
+        return "exit-to-download-template-hrbp-contingent-labour-route"
  
     return "we-could-not-find-the-right-process-for-you"
