@@ -433,7 +433,7 @@ def is_procurement_case(answers: dict) -> bool:
     is_not_novel = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
     is_not_pilot = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no"
     is_not_existing_programme = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
-    is_not_digital_budget = answers.get(where_is_the_budget_held, None) != ""
+    budget_answered = answers.get(where_is_the_budget_held, None) != ""
 
     is_trying_to_procure_from_third_party = answers.get(which_option_describes_what_you_are_trying_to_do, None) in {
         procure_goods_and_services_from_third_party,
@@ -444,7 +444,7 @@ def is_procurement_case(answers: dict) -> bool:
     return (is_not_novel and
             is_not_pilot and
             is_not_existing_programme and
-            is_not_digital_budget and
+            budget_answered and
             is_trying_to_procure_from_third_party and
             is_corporate_spend_or_procurement)
 

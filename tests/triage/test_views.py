@@ -4,7 +4,6 @@ from django.urls import reverse
 from apps.triage.models import BusinessCase, BusinessCaseTriageResponse
 from apps.triage.flow import get_first_question_slug, QUESTION_SLUGS
 from apps.triage.slugs import *
-from os import listdir
 
 @pytest.fixture
 def client(db):
@@ -17,9 +16,7 @@ def started_session(client):
     client.get(reverse("triage:start"))
     return client
 
-
 # Pages load
-
 
 def test_3_stage_process_page_loads(client):
     resp = client.get(reverse("triage:result", kwargs={"slug": "you-need-to-follow-a-three-stage-process"}))
