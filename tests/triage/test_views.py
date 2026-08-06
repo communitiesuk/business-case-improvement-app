@@ -16,8 +16,8 @@ def started_session(client):
     client.get(reverse("triage:start"))
     return client
 
-
 # Pages load
+
 def test_3_stage_process_page_loads(client):
     resp = client.get(reverse("triage:result", kwargs={"slug": "you-need-to-follow-a-three-stage-process"}))
     assert resp.status_code == 200
@@ -25,6 +25,21 @@ def test_3_stage_process_page_loads(client):
 
 def test_below_12k_no_programme_not_digital_loads(client):
     resp = client.get(reverse("triage:result", kwargs={"slug": "do-not-need-a-business-case-no-programme-not-digital"}))
+    assert resp.status_code == 200
+
+
+def test_corporate_spend_fbp_exit_loads(client):
+    resp = client.get(reverse("triage:result", kwargs={"slug": "exit-to-download-template-corporate-spend-fbp-route"}))
+    assert resp.status_code == 200
+
+
+def test_hrbp_contingent_labour_exit_loads(client):
+    resp = client.get(reverse("triage:result", kwargs={"slug": "exit-to-download-template-hrbp-contingent-labour-route"}))
+    assert resp.status_code == 200
+
+
+def test_procurement_template_exit_loads(client):
+    resp = client.get(reverse("triage:result", kwargs={"slug": "exit-to-download-template-procurement-route"}))
     assert resp.status_code == 200
 
 

@@ -118,7 +118,7 @@ QUESTIONS = [
     },
     {
         "slug": which_best_describes_your_spend,
-        "title": "Which best describes your situation?",
+        "title": "Which best describes your spend?",
         "type": "radio",
         "choices": [
             (spend_on_corporate_activities,"Spend money on corporate activities - Purchase additional licences, equipment, training or similar operational items that do not require a new procurement approach"),
@@ -307,6 +307,7 @@ ROUTING = {
     (is_this_a_retrospective_case, "*"): which_option_describes_what_you_are_trying_to_do,
     (which_option_describes_what_you_are_trying_to_do, commission_research): "calculate-result",
     (which_option_describes_what_you_are_trying_to_do, procure_goods_and_services_from_third_party): which_best_describes_your_spend,
+    (which_option_describes_what_you_are_trying_to_do, hire_contracted_workers_to_fill_temporary_capacity_gap): give_your_bjc_a_name,
     (which_best_describes_your_spend, spend_on_corporate_activities): give_your_bjc_a_name,
     (which_best_describes_your_spend, procuring_something_else): are_you_procuring_consulting_and_professional_services,
     (are_you_procuring_consulting_and_professional_services, "*"): we_want_to_continue_improving_our_service,
@@ -371,7 +372,7 @@ def get_result_from_answers(answers: dict) -> str:
                 return 'you-need-to-speak-to-the-research-team'
             
             if full_12k_to_2m_flow_completed(answers):
-                return get_12k_to_2m_route_exit(answers)
+                return get_procurement_exit(answers)
             else:
                 return "we-could-not-find-the-right-process-for-you"
 
@@ -417,44 +418,35 @@ def full_12k_to_2m_flow_completed(answers: dict) -> bool:
     is_not_novel = answers.get(novel_repercussive_contentious_hmt_consent, None) == "no"
     is_not_pilot = answers.get(is_this_request_a_pilot_with_potential_to_be_a_larger_proposal, None) == "no"
     is_not_existing_programme = answers.get(is_this_request_part_of_a_wider_programme_with_existing_business_case, None) == "no"
-    budget_confirmed = answers.get(where_is_the_budget_held, None) != ""
+    budget_answered = answers.get(where_is_the_budget_held, None) != ""
 
-    what_youre_trying_to_do: str | None = answers.get(which_option_describes_what_you_are_trying_to_do, None)
-    what_youre_trying_to_do_follows_procurement_route: bool = (
-        what_youre_trying_to_do == procure_goods_and_services_from_third_party or
-        what_youre_trying_to_do == hire_contracted_workers_to_fill_temporary_capacity_gap
-    )
+    is_trying_to_procure_from_third_party = answers.get(which_option_describes_what_you_are_trying_to_do, None) in {
+        procure_goods_and_services_from_third_party,
+        hire_contracted_workers_to_fill_temporary_capacity_gap
+        }
     
-    describe_your_spend_follows_procurement_route: bool = (
-        answers.get(which_best_describes_your_spend, None) == spend_on_corporate_activities or
-        answers.get(which_best_describes_your_spend, None) == procuring_something_else
-    )
-
-    # basically checking users haven't skipped ahead somehow and have completed triage
-    bjc_name_confirmed = answers.get(give_your_bjc_a_name, None) != ""
-    high_level_summary_confirmed = answers.get(provide_a_high_level_summary, None) != ""
-
+    is_corporate_spend_or_procurement: bool = answers.get(which_best_describes_your_spend, None) != ""
     return (is_not_novel and
             is_not_pilot and
             is_not_existing_programme and
-            budget_confirmed and
-            what_youre_trying_to_do_follows_procurement_route and
-            describe_your_spend_follows_procurement_route and
-            bjc_name_confirmed and
-            high_level_summary_confirmed)
+            budget_answered and
+            is_trying_to_procure_from_third_party and
+            is_corporate_spend_or_procurement)
 
-'''
-Once we know it's following the 12k-2m cost route, send here to return the specific
-exit required.
-No need to re-check the routing
-'''
-def get_12k_to_2m_route_exit(answers: dict) -> str:
-    # this routing is for next sprint
+def get_procurement_exit(answers: dict) -> str:
+    best_describes_your_situation: str | None = answers.get(which_option_describes_what_you_are_trying_to_do, None)
+    best_describes_your_spend: str | None = answers.get(which_best_describes_your_spend, None)
+
     if answers.get(where_is_the_budget_held, None) == DIGITAL_STRING:
         return "we-could-not-find-the-right-process-for-you"
-
-    if answers.get(where_is_the_budget_held, None) != DIGITAL_STRING:
-        return "you-need-to-start-a-business-justification-case"
-
-    return "we-could-not-find-the-right-process-for-you"
     
+    if best_describes_your_situation == procure_goods_and_services_from_third_party:
+        if best_describes_your_spend == spend_on_corporate_activities:
+            return "exit-to-download-template-corporate-spend-fbp-route"
+        if best_describes_your_spend == procuring_something_else:
+            return "exit-to-download-template-procurement-route" 
+
+    if best_describes_your_situation == hire_contracted_workers_to_fill_temporary_capacity_gap:
+        return "exit-to-download-template-hrbp-contingent-labour-route"
+ 
+    return "we-could-not-find-the-right-process-for-you"
