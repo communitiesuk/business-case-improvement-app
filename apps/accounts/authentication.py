@@ -195,7 +195,6 @@ class Authentication:
             return user
 
         # No usable password: Entra users authenticate against Microsoft,
-        # never against a locally-stored password.
         with transaction.atomic():
             user = User.objects.create_user(**self._user_mapping(**attributes))
             user.set_unusable_password()
@@ -215,7 +214,7 @@ class Authentication:
 
     def _find_unlinked_user(self, mapping):
         """
-        Lets you pre-provision users (e.g. via the admin, to assign roles
+        pre-provision users (e.g. via the admin panel, to assign roles
         ahead of time) who get linked to their Entra identity automatically
         the first time they sign in. - For first time use, or for setting up
         test users before they login - useful for Authorisation in the future

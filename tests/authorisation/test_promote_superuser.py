@@ -69,10 +69,6 @@ def test_raises_without_email_from_either_source(settings):
 
 @pytest.mark.django_db
 def test_matches_existing_user_case_insensitively():
-    """Entra's Graph API returns `mail` in mixed case, so the row created on
-    first sign-in is mixed case. Promoting by a lowercase address must find
-    and promote that row, not create a second one holding the flags while
-    the real signed-in user stays unprivileged."""
     existing = User.objects.create_user(
         username="Richard.Byrne@communities.gov.uk",
         email="Richard.Byrne@communities.gov.uk",
