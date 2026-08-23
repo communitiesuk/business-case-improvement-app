@@ -51,7 +51,6 @@ def test_adding_data_to_section_content():
     content_dict = {}
     sect_content = _SectionContent()
 
-
     # Act
     sect_content.add_section_header(header)
     sect_content.add_item_to_content(content_string)
