@@ -52,7 +52,7 @@ class BusinessCase(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"BusinessCase {self.pk}"
+        return f"BusinessCase id: {self.pk}"
 
 
 class BusinessCaseResponse(models.Model):
@@ -91,7 +91,7 @@ class BusinessCaseResponseSummary(models.Model):
 
 
     def __str__(self):
-        return f"BusinessCaseResponse: {self.business_case_response_id}"
+        return f"BusinessCaseResponse: id: {self.business_case_response_id}"
 
 
 class BusinessCaseResponseSection(models.Model):
@@ -103,7 +103,7 @@ class BusinessCaseResponseSection(models.Model):
     header_text = models.CharField(max_length=100, blank=False, null=False, default="")
     
     def __str__(self):
-        return ""
+        return f"BusinessCaseResponseSection: header: {self.header_text}"
 
 
 class BusinessCaseResponseBlock(models.Model):
