@@ -39,20 +39,6 @@ class BusinessCaseTriageResponse(models.Model):
 
 
 class BusinessCase(models.Model):
-    # class Status(models.TextChoices):
-    #     ACTIVE = "Active", "Active"
-    #     UPLOADED = "Uploaded", "Uploaded"
-    #     WITHDRAWN = "Withdrawn", "Withdrawn"
-
-    # name = models.CharField(max_length=255, blank=True, default="")
-    # directorate = models.CharField(max_length=255, blank=True, default="")
-    # type = models.CharField(max_length=255, blank=True, default="")
-    # lead_contact = models.CharField(max_length=255, blank=True, default="")
-    # summary = models.TextField(blank=True, default="")
-    # status = models.CharField(
-    #     choices=Status.choices,
-    #     default=Status.ACTIVE,
-    # )
     business_case_triage_response = models.ForeignKey(
         BusinessCaseTriageResponse,
         on_delete=models.PROTECT,
@@ -67,10 +53,6 @@ class BusinessCase(models.Model):
 
     def __str__(self):
         return f"BusinessCase {self.pk}"
-
-
-
-
 
 
 class BusinessCaseResponse(models.Model):
@@ -95,10 +77,6 @@ class BusinessCaseResponse(models.Model):
         return f"BusinessCase: {self.business_case_id} - response version: {self.version}"
 
 
-
-
-
-
 class BusinessCaseResponseSummary(models.Model):
     business_case_response_id = models.ForeignKey(
         BusinessCaseResponse,
@@ -114,6 +92,7 @@ class BusinessCaseResponseSummary(models.Model):
 
     def __str__(self):
         return f"BusinessCaseResponse: {self.business_case_response_id}"
+
 
 class BusinessCaseResponseSection(models.Model):
     business_case_response_id = models.ForeignKey(
@@ -146,4 +125,5 @@ class BusinessCaseResponseBlock(models.Model):
     block_data = models.BinaryField(blank=False, null=False)
 
     def __str__(self):
-        return f"Content: {self.block_data} - Content Type: {self.block_type}" 
+        return f"Content: {self.block_data} - Content Type: {self.block_type}"
+    

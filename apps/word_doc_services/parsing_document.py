@@ -28,9 +28,6 @@ summary_key_whole_life_cost: str = "whole_life_cost"
 
 logger = logging.getLogger(__name__)
 
-# to be removed, temporary measure
-default_user_string:str = "DefaultTestUser"
-
 '''
 Summary:
     Class for the section content. Keep the section heading along with a list of all the
@@ -71,7 +68,7 @@ def submit_data_to_models(summary_section: dict, document_data: list[_SectionCon
     business_case_object, _ = BusinessCase.objects.get_or_create(business_case_triage_response=triage_response_object)
 
     BusinessCaseResponse.objects.create(
-        uploaded_by=default_user_string,
+        uploaded_by="DefaultTestUser",
         business_case_id=business_case_object
     )
 
