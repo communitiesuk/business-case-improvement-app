@@ -321,6 +321,7 @@ def _extract_data_from_doc_table(tbl: Table) -> dict[str, str]:
     
     return tbl_dict
 
+
 '''
 Summary:
     Remove and format string in the way we need.

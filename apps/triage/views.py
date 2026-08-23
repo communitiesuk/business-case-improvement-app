@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.utils import timezone
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpRequest, HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import redirect
 
 from .flow import (
     get_first_question_slug,
@@ -12,10 +13,6 @@ from .slugs import give_your_bjc_a_name
 from .calculate_result_helpers import get_result_from_answers
 from ..word_doc_services.parsing_document import parse_word_document
 
-
-from django.shortcuts import redirect
-from django.views.decorators.http import require_POST
-from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed
 from pathlib import Path
 
 from docx import Document
@@ -34,6 +31,7 @@ def _get_or_create_session(request) -> BusinessCaseTriageResponse:
 
 def index(request):
     return render(request, "triage/index.html")
+
 
 def upload(request):
     return render(request, "triage/upload_document_placeholder_template.html")
