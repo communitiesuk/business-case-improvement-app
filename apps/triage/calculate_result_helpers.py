@@ -5,7 +5,7 @@ from .triage_data import TriageData
 # because routing requires very specific checks, setting here to reduce likelihood of unknowing changes
 class AnswerConstants(str, Enum):
     ABOVE_2M = "above-2m"
-    BETWEEN_12K_AND_2M_STRING = "between-12k-and-2m"
+    BETWEEN_12K_AND_2M = "between-12k-and-2m"
     BELOW_12K = "below-12k"
     DIGITAL_STRING = "Digital"
 
@@ -24,7 +24,7 @@ def get_result_from_answers(answers: dict) -> str:
     if total_value == AnswerConstants.ABOVE_2M:
         return "you-need-to-follow-a-three-stage-process"
 
-    if total_value == AnswerConstants.BETWEEN_12K_AND_2M_STRING:
+    if total_value == AnswerConstants.BETWEEN_12K_AND_2M:
         if triage_data.is_commission_research:
             return 'you-need-to-speak-to-the-research-team'
         
