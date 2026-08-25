@@ -7,9 +7,16 @@ from .flow import (
     get_first_question_slug,
     get_next,
     get_question,
+    get_business_case_type_from_result_slug,
 )
 from .models import BusinessCase, BusinessCaseTriageResponse
-from .slugs import give_your_bjc_a_name
+from .slugs import give_your_bjc_a_name, where_is_the_budget_held, provide_a_high_level_summary
+
+def _get_lead_contact(request) -> str:
+    if request.user.is_authenticated:
+        return request.user.get_full_name()
+    return "Not Available"
+
 from .calculate_result_helpers import get_result_from_answers
 from ..word_doc_services.parsing_document import parse_word_document
 
@@ -104,11 +111,23 @@ def question(request, slug: str):
             triage_session.result = result_slug
             triage_session.completed_at = timezone.now()
             triage_session.save()
-            BusinessCase.objects.get_or_create(
-                business_case_triage_response=triage_session,
-            )
 
-            request.session["business_case_title"] = triage_session.answers.get(give_your_bjc_a_name, "")
+            business_case_name = triage_session.answers.get(give_your_bjc_a_name, "")
+            business_case_type = get_business_case_type_from_result_slug(result_slug, "")
+            if business_case_type != "":
+                BusinessCase.objects.get_or_create(
+                    business_case_triage_response=triage_session,
+                    defaults={
+                        "name": business_case_name,
+                        "directorate": triage_session.answers.get(where_is_the_budget_held, ""),
+                        "type": business_case_type,
+                        "lead_contact": _get_lead_contact(request),
+                        "summary": triage_session.answers.get(provide_a_high_level_summary, "No Summary Provided"),
+                        "status": "Active",
+                    },
+                )
+
+            request.session["business_case_title"] = business_case_name
 
             return redirect("triage:result", slug=result_slug)
 
