@@ -1,4 +1,3 @@
-
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import Pt, RGBColor
@@ -60,10 +59,7 @@ class BusinessCaseWordDocumentWrapper:
     def __init__(self):
         self.doc = Document()
 
-    '''
-    Summary:
-        Add a H1 styled heading to the word doc.
-    '''
+
     def add_h1_section_header(self, header_text: str):
         p = self.get_basic_paragraph()
         r = p.add_run(header_text)
@@ -73,10 +69,7 @@ class BusinessCaseWordDocumentWrapper:
         r.font.italic = False
         r.font.name = bold_font_name
 
-    '''
-    Summary:
-        Add a H2 styled heading to the word doc.
-    '''
+
     def add_h2_section_header(self, header_text: str):
         p = self.get_basic_paragraph()
         r = p.add_run(header_text)
@@ -86,10 +79,7 @@ class BusinessCaseWordDocumentWrapper:
         r.font.italic = False
         r.font.name = bold_font_name
 
-    '''
-    Summary:
-        Add a paragraph to the word doc with styling
-    '''
+    
     def add_paragraph(self, paragraph_content: str):
         p = self.get_basic_paragraph()
         p.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
@@ -98,7 +88,8 @@ class BusinessCaseWordDocumentWrapper:
 
     '''
     Summary:
-        Get a basic paragraph with styling
+        Get a paragraph with some basic styling applied that
+        applies to all paragraphs.
     '''
     def get_basic_paragraph(self):
         p = self.doc.add_paragraph()
@@ -109,6 +100,7 @@ class BusinessCaseWordDocumentWrapper:
     Summary:
         Style a paragraph run.
         Separate styling here so multiple methods can call it.
+        This is generic styling for a regualr paragraph, i.e not a header.
     '''
     def style_paragraph_run(self, r: Run):
         r.font.color.rgb = get_general_font_colour_rgb()
@@ -117,12 +109,7 @@ class BusinessCaseWordDocumentWrapper:
         r.font.italic = False
         r.font.name = regular_font_name
 
-    '''
-    Summary:
-        Add a bullet point list to the document
-    Params:
-        items: the items to appear in the bullet point list
-    '''
+
     def add_bullet_point_list(self, items: list[str]):
         for item in items:
             p = self.doc.add_paragraph()
@@ -137,7 +124,7 @@ class BusinessCaseWordDocumentWrapper:
 
     '''
     Summary:
-        Add fixed text (e.g. text from triage we know about) to the document
+        Add fixed text (e.g. text from triage we know about) to the document.
     '''
     def add_fixed_text(self, fixed_text: str):
         p = self.doc.add_paragraph()
@@ -154,8 +141,7 @@ class BusinessCaseWordDocumentWrapper:
     Summary:
         Add a Hyperlink to the Word Document.
         Because there is no explicit hyperlink class in Docx we have to make it using the Oxml.
-        Take in a string to represent the URL, the entire text to display, and the text that should become the hyperlink.
-
+        Take in a string that represents the URL, the entire text to display, and the text that should become the hyperlink.
     '''
     def add_hyperlink(self, url: str, text: str, text_to_replace_with_hyperlink):
         if (text_to_replace_with_hyperlink not in text):
@@ -175,7 +161,6 @@ class BusinessCaseWordDocumentWrapper:
         # Create a w:r element
         new_run = OxmlElement('w:r')
 
-        # Join all the xml elements together add add the required text to the w:r element
         new_run.append(self.get_hyperlink_run_style())
         new_run.text = text_to_replace_with_hyperlink
        
@@ -185,6 +170,7 @@ class BusinessCaseWordDocumentWrapper:
         
         hyperlink.append(new_run)
 
+        # join the text before the hyperlink, then the hyperlink, then the text after it
         start_run = p.add_run(f"{start.strip()} ")
         self.style_paragraph_run(start_run)
 
@@ -233,3 +219,4 @@ class BusinessCaseWordDocumentWrapper:
         except Exception as ex:
             logger.error(f"Error while saving Business Case template. Message: {ex.__str__}")
             return False
+

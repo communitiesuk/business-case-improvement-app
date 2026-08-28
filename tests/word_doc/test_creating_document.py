@@ -93,3 +93,4 @@ def test_adding_fixed_text():
     assert wrapper.doc.paragraphs[0].runs[0].italic == True
     assert wrapper.doc.paragraphs[0].runs[0].font.size == Pt(12)
     assert wrapper.doc.paragraphs[0].runs[0].font.name == italic_font_name
+
