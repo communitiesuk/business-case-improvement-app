@@ -250,7 +250,7 @@ class _InputBox:
 
     '''
     Summary:
-        Addds an input box to the 
+        Addds an input box to the Word Document
     '''
     def add_input_box(self, doc: doc):
         tbl = doc.add_table(1, 1)
