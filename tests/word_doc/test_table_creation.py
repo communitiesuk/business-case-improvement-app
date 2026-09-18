@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 from apps.word_doc_services.create_document_objects import (
     create_table,
-    TableDefinition
+    TABLE_DEFINITION
 )
 
 from docx import Document
@@ -11,7 +11,7 @@ def test_create_table_method_adds_table_to_document():
     test_doc = Document()
 
     # act
-    create_table(TableDefinition.SINGLE_CELL_TEXT_BOX, test_doc)
+    create_table(TABLE_DEFINITION.SINGLE_CELL_TEXT_BOX, test_doc)
 
     # assert
     assert len(test_doc.tables) == 1
@@ -19,7 +19,7 @@ def test_create_table_method_adds_table_to_document():
 
 def test_create_table_method_handles_invalid_table_definition():
     # arrange
-    mock_enum = MagicMock(spec=TableDefinition)
+    mock_enum = MagicMock(spec=TABLE_DEFINITION)
     mock_enum.__int__.return_value = 999
     mock_enum.value = 999
     mock_enum.name = "TEST_ENUM"
@@ -39,7 +39,7 @@ def test_create_table_method_adds_table_footer():
     test_doc = Document()
     
     # act
-    create_table(TableDefinition.SINGLE_CELL_TEXT_BOX, test_doc, test_doc_table_footer)
+    create_table(TABLE_DEFINITION.SINGLE_CELL_TEXT_BOX, test_doc, test_doc_table_footer)
     test_para = test_doc.paragraphs[0]
     paragraph_count = len(test_doc.paragraphs)
     
@@ -53,7 +53,7 @@ def test_create_table_method_can_add_a_table_for_each_table_definition():
     tbl_count: int = 0
 
     # act 
-    for tbl_def in TableDefinition:
+    for tbl_def in TABLE_DEFINITION:
         tbl_count +=1
         create_table(tbl_def, test_doc)
 
