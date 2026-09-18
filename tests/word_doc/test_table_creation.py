@@ -5,8 +5,6 @@ from apps.word_doc_services.create_document_objects import (
     table_footer_word_count
 )
 
-from docx import Document
-
 
 def test_create_table_method_adds_table_to_document():
     # arrange
