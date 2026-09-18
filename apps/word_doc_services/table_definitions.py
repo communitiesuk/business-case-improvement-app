@@ -14,7 +14,6 @@ class TABLE_DEFINITION(IntEnum):
     COST_CENTRE = auto()
     WHOLE_LIFE_COST = auto()
     OTHER_BUSINESS_CASES = auto()
-    RISK_TABLE = auto()
     SME_AREA = auto()
     ADDITIONAL_APPROVALS = auto()
 

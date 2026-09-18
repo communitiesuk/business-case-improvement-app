@@ -364,38 +364,6 @@ class InputBox:
             r.font.name = _regular_font_name
 
 
-    # '''
-    # Summary:
-    #     Set some default formatting on the input box.
-    #     Because we are using the default paragraph that exists when creating a table,
-    #     we need to set this here via Oxml. If we add a paragraph through add_paragraph()
-    #     this formatting won't be applied and the user will use the default styling in Word.
-    # '''
-    # def set_box_formatting(self, p: Paragraph):
-    #     pPr = p._p.get_or_add_pPr()
-
-    #     # Get or create paragraph-level run properties (<w:rPr>)
-    #     rPr = pPr.find(qn('w:rPr'))
-    #     if rPr is None:
-    #         rPr = OxmlElement('w:rPr')
-    #         pPr.append(rPr)
-            
-    #     # Set the font name
-    #     rFonts = OxmlElement('w:rFonts')
-    #     rFonts.set(qn('w:ascii'), _regular_font_name)
-    #     rFonts.set(qn('w:hAnsi'), _regular_font_name)
-    #     rPr.append(rFonts)
-
-    #     # Set the deafult font colour
-    #     color = OxmlElement('w:color')
-    #     color.set(docx.oxml.ns.qn('w:val'), _regular_font_name)
-    #     rPr.append(color)
-
-    #     # Set the font size (Word measures this in half-points, so 12pt = 24)
-    #     sz = OxmlElement('w:sz')
-    #     sz.set(qn('w:val'), "24")
-    #     rPr.append(sz)
-
 '''
 Summary:
 
