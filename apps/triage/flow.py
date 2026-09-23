@@ -34,9 +34,9 @@ QUESTIONS = [
         "hint": '<div class="govuk-inset-text">The total value means the whole life cost of the business case including VAT.</div>',
         "help_text": "We ask this first because the value influences whether you need a business case at all. The total value is the whole life cost of the business case, including staffing costs, capital and revenue.",
         "choices": [
-            (AnswerConstants.BELOW_12K, "Below £12,000"),
-            (AnswerConstants.BETWEEN_12K_AND_2M, "Between £12,000 and 2m"),
-            (AnswerConstants.ABOVE_2M, "Above 2m")
+            (AnswerConstants.BELOW_12K.value, "Below £12,000"),
+            (AnswerConstants.BETWEEN_12K_AND_2M.value, "Between £12,000 and 2m"),
+            (AnswerConstants.ABOVE_2M.value, "Above 2m")
         ],
     },
     {
