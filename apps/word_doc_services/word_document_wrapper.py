@@ -10,13 +10,13 @@ from docx.text.run import Run
 import docx.opc.constants
 import logging
 
-from Tables.generic_table import GenericTable
-from Tables.input_box import InputBox
-from Tables.helpbox import HelpBox
-from Tables.checkbox import CheckBox
-from Tables.table_definitions import TABLE_DEFINITION
+from apps.word_doc_services.tables.generic_table import GenericTable
+from apps.word_doc_services.tables.input_box import InputBox
+from apps.word_doc_services.tables.helpbox import HelpBox
+from apps.word_doc_services.tables.checkbox import CheckBox
+from apps.word_doc_services.tables.table_definitions import TABLE_DEFINITION
 
-from common_resources import (
+from apps.word_doc_services.common_resources import (
     get_general_font_colour_rgb,
     get_mhclg_green_rgb,
     _bold_font_name,
@@ -215,7 +215,7 @@ class BusinessCaseWordDocumentWrapper:
     Params:
         word_limit: Optional, guidance on how many words to use in the Input box.
     '''
-    def add_input_box(self, word_limit: str):
+    def add_input_box(self, word_limit: int = 0):
         input_box = InputBox(word_limit)
         input_box.add_input_box(self.doc)
         self.doc.add_paragraph()

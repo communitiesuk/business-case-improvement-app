@@ -2,8 +2,8 @@ from docx.document import Document as doc
 from docx.shared import Cm, Pt
 from docx.enum.table import WD_ROW_HEIGHT_RULE
 
-from table_common_resources import max_table_width
-from word_doc_services.common_resources import _regular_font_name
+from apps.word_doc_services.tables.table_common_resources import max_table_width
+from apps.word_doc_services.common_resources import _regular_font_name
 
 '''
 Summary:

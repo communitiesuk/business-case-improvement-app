@@ -4,16 +4,16 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.enum.table import WD_ROW_HEIGHT_RULE
 from docx.shared import Cm, Pt
 
-from .table_common_resources import (
+from apps.word_doc_services.tables.table_common_resources import (
     max_table_width,
     set_default_paragraph_formatting
 )
 
-from word_doc_services.common_resources import get_general_font_colour_rgb, _regular_font_name
+from apps.word_doc_services.common_resources import get_general_font_colour_rgb, _regular_font_name
 
 class InputBox:
 
-    def __init__(self, word_limit: str = ""):
+    def __init__(self, word_limit: int = 0):
         self.word_limit = word_limit
 
 
@@ -34,7 +34,7 @@ class InputBox:
         box_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
         # add a footer to the input box with the word limit
-        if self.word_limit != "":
+        if self.word_limit > 0:
             tbl_footer = doc.add_paragraph()
             tbl_footer.paragraph_format.space_before = 0
 

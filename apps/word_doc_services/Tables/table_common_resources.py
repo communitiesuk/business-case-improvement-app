@@ -6,7 +6,7 @@ from docx.text.paragraph import Paragraph
 from docx.oxml.parser import OxmlElement
 import docx
 
-from word_doc_services.common_resources import(
+from apps.word_doc_services.common_resources import(
     translate_hex_to_rgb,
     _regular_font_name
 )

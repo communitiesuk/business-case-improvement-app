@@ -11,7 +11,7 @@ from .table_common_resources import (
     _blue_help_box_background_hex
 )
 
-from word_doc_services.common_resources import (
+from apps.word_doc_services.common_resources import (
     get_general_font_colour_rgb,
     _bold_font_name,
     _regular_font_name

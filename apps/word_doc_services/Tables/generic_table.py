@@ -1,16 +1,16 @@
 from docx.document import Document as doc
 from docx.shared import Pt, Cm
 
-from .table_definitions import (
+from apps.word_doc_services.tables.table_definitions import (
     TABLE_DEFINITION,
     TABLE_REGISTRY,
     _TableContent,
     HEADER_DIRECTION
 )
 
-from word_doc_services.common_resources import _regular_font_name
+from apps.word_doc_services.common_resources import _regular_font_name
 
-from table_common_resources import (
+from apps.word_doc_services.tables.table_common_resources import (
     max_table_width,
     set_default_paragraph_formatting
 )

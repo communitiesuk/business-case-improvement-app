@@ -1,11 +1,9 @@
-from unittest.mock import MagicMock
 from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
-from apps.word_doc_services.Tables.table_definitions import TABLE_DEFINITION
-
+from apps.word_doc_services.tables.table_definitions import TABLE_DEFINITION
 
 def test_create_table_method_adds_table_footer():
     # arrange
-    word_count = "100"
+    word_count = 100
     test_doc = BusinessCaseWordDocumentWrapper()
     
     # act
@@ -15,7 +13,7 @@ def test_create_table_method_adds_table_footer():
     
     # assert
     assert paragraph_count == 3
-    assert test_para.text == "Word count guideline: {} words".format(word_count)
+    assert test_para.text == f"Word count guideline: {word_count} words"
 
 
 def test_create_table_method_can_add_a_table_for_each_table_definition():
@@ -43,8 +41,8 @@ def test_checkbox_creation():
 
     # assert
     assert len(test_doc.doc.tables) == 1
-    assert test_doc.doc.tables[0].cell(0, 1).paragraphs[0].text == options[1]
-    assert test_doc.doc.tables[0].cell(1, 1).paragraphs[0].text == options[2]
+    assert test_doc.doc.tables[0].cell(0, 1).paragraphs[0].text == options[0]
+    assert test_doc.doc.tables[0].cell(1, 1).paragraphs[0].text == options[1]
 
 
 def test_helbox_creation():
