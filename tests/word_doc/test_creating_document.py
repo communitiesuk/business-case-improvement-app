@@ -1,4 +1,4 @@
-from apps.word_doc_services.creating_document import *
+from apps.word_doc_services.word_document_wrapper import *
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
 
 def test_creating_empty_doc():

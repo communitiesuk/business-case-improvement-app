@@ -1,26 +1,12 @@
 from unittest.mock import MagicMock
-from apps.word_doc_services.create_document_objects import (
-    TABLE_DEFINITION,
-    BusinessCaseWordDocument,
-    table_footer_word_count
-)
-
-
-def test_create_table_method_adds_table_to_document():
-    # arrange
-    test_doc = BusinessCaseWordDocument()
-
-    # act
-    test_doc.add_generic_table(TABLE_DEFINITION.BREAKDOWN_OF_COST)
-
-    # assert
-    assert len(test_doc.doc.tables) == 1
+from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
+from apps.word_doc_services.Tables.table_definitions import TABLE_DEFINITION
 
 
 def test_create_table_method_adds_table_footer():
     # arrange
     word_count = "100"
-    test_doc = BusinessCaseWordDocument()
+    test_doc = BusinessCaseWordDocumentWrapper()
     
     # act
     test_doc.add_input_box(word_count)
@@ -29,12 +15,12 @@ def test_create_table_method_adds_table_footer():
     
     # assert
     assert paragraph_count == 3
-    assert test_para.text == table_footer_word_count.format(word_count)
+    assert test_para.text == "Word count guideline: {} words".format(word_count)
 
 
 def test_create_table_method_can_add_a_table_for_each_table_definition():
     # arrange
-    test_doc = BusinessCaseWordDocument()
+    test_doc = BusinessCaseWordDocumentWrapper()
     tbl_count: int = 0
 
     # act 
@@ -46,3 +32,28 @@ def test_create_table_method_can_add_a_table_for_each_table_definition():
     # assert
     assert tbl_count == len(test_doc.doc.tables)
 
+
+def test_checkbox_creation():
+    # arrange
+    test_doc = BusinessCaseWordDocumentWrapper()
+    options: list[str] = ["Opt 1", "Opt 2"]
+
+    # act 
+    test_doc.add_checkbox(options)
+
+    # assert
+    assert len(test_doc.doc.tables) == 1
+    assert test_doc.doc.tables[0].cell(0, 1).paragraphs[0].text == options[1]
+    assert test_doc.doc.tables[0].cell(1, 1).paragraphs[0].text == options[2]
+
+
+def test_helbox_creation():
+    # arrange
+    test_doc = BusinessCaseWordDocumentWrapper()
+    help_strings: list[str] = ["Help Text title", "Further details"]
+
+    # act 
+    test_doc.add_help_box(help_strings)
+
+    # assert
+    assert len(test_doc.doc.tables) == 1
