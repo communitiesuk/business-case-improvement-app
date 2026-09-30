@@ -155,7 +155,6 @@ def test_procurement_routes_to_procurement():
         "no",
         "Any Answer",
         "Any Answer",
-        "Any Answer",
         procure_goods_and_services_from_third_party,
         procuring_something_else,
         "no",
@@ -178,7 +177,6 @@ def test_procurement_routes_to_fbp():
         "no",
         "no",
         "no",
-        "Any Answer",
         "Any Answer",
         "Any Answer",
         procure_goods_and_services_from_third_party,
@@ -205,7 +203,6 @@ def test_procurement_routes():
         "no",
         "no",
         "Any Answer",
-        "Any Answer", 
         procure_goods_and_services_from_third_party,
         procuring_something_else,
         "no",
@@ -230,8 +227,8 @@ def test_procurement_routes_to_hrbp_labour():
         "no",
         "Any Answer",
         "Any Answer",
-        "Any Answer",
         hire_contracted_workers_to_fill_temporary_capacity_gap,
+        "yes",
         "title",
         "details"
     ]
@@ -252,7 +249,6 @@ def test_procurement_routes_including_digital_routes_away_from_procurement():
         "no",
         "Any Answer",
         AnswerConstants.DIGITAL_STRING,
-        "Any Answer",
         procure_goods_and_services_from_third_party,
         spend_on_corporate_activities,
         "title",
@@ -270,7 +266,8 @@ def test_3_stage_process_for_novel():
     # arrange
     responses = [
         "between-12k-and-2m",
-        "yes"
+        "yes",
+        "*"
     ]
 
     # act
@@ -285,7 +282,8 @@ def test_3_stage_process_for_pilot():
     responses = [
         "between-12k-and-2m",
         "no",
-        "yes"
+        "yes",
+        "*"
     ]
 
     # act
@@ -304,7 +302,6 @@ def test_commission_research_routing():
         "no",
         "Any Answer",
         AnswerConstants.DIGITAL_STRING,
-        "Any Answer",
         commission_research
     ]
 

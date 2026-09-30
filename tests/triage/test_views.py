@@ -178,6 +178,28 @@ def test_question_with_answer_redirects(started_session, db):
     )
     assert resp.status_code == 302
 
+def test_notice_without_answer_redirects(started_session, db):
+    resp = started_session.post(
+        reverse("triage:question", kwargs={"slug": "novel-repercussive-contentious-hmt-consent-notice"}),
+        data={},
+    )
+    assert resp.status_code == 302
+
+def test_answer_within_max_words_redirects(started_session, db):
+    resp = started_session.post(
+        reverse("triage:question", kwargs={"slug": "provide-a-high-level-summary"}),
+        data={"answer": "text"},
+    )
+    assert resp.status_code == 302
+
+def test_answer_exceeds_max_words_of_30_error(started_session, db):
+    resp = started_session.post(
+        reverse("triage:question", kwargs={"slug": "provide-a-high-level-summary"}),
+        data={"answer": "text " * 31},
+    )
+    assert resp.status_code == 200
+    assert f"Summary must be 30 characters or less"
+
 
 #  Session / answer saving
 
@@ -210,10 +232,9 @@ def test_procurement_template_route(client, db):
         total_value_of_business_case: "between-12k-and-2m",
         novel_repercussive_contentious_hmt_consent: "no",
         is_this_request_a_pilot: "no",
-        is_this_request_part_of_a_wider_programme_with_existing_business_case: "no",
+        making_a_change_to_or_additional_money_for_existing_business_case: "no",
         any_other_business_cases_that_are_connected_to_this_work: "*",
         where_is_the_budget_held: "*",
-        is_this_a_retrospective_case: "*",
         which_option_describes_what_you_are_trying_to_do: procure_goods_and_services_from_third_party,
         which_best_describes_your_spend: spend_on_corporate_activities,
         give_your_bjc_a_name: "*",

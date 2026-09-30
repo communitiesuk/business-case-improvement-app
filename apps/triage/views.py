@@ -85,7 +85,12 @@ def question(request, slug: str):
     if request.method == "POST":
         answer = request.POST.get("answer", "").strip()
 
-        if not answer:
+        question_type = question_def.get("type") if question_def else None
+
+        # Notices don't require answers
+        if question_type == "notice":
+            pass
+        elif not answer:
             return render(
                 request,
                 "triage/question.html",
@@ -93,6 +98,19 @@ def question(request, slug: str):
                     "question": question_def,
                     "selected": "",
                     "error": "Select an answer to continue",
+                },
+            )
+
+        question_maxwords = question_def.get("maxwords") if question_def else None
+
+        if question_type == "charactercounttextarea" and question_maxwords and len(answer.split()) > question_maxwords:
+            return render(
+                request,
+                "triage/question.html",
+                {
+                    "question": question_def,
+                    "value": answer,
+                    "error": f"Summary must be {question_maxwords} characters or less",
                 },
             )
 
