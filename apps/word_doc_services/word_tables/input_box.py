@@ -4,7 +4,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.enum.table import WD_ROW_HEIGHT_RULE
 from docx.shared import Cm, Pt
 
-from apps.word_doc_services.tables.table_common_resources import (
+from apps.word_doc_services.word_tables.table_common_resources import (
     max_table_width,
     set_default_paragraph_formatting
 )

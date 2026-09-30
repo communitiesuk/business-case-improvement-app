@@ -1,7 +1,7 @@
 from docx.document import Document as doc
 from docx.shared import Pt, Cm
 
-from apps.word_doc_services.tables.table_definitions import (
+from apps.word_doc_services.word_tables.table_definitions import (
     TABLE_DEFINITION,
     TABLE_REGISTRY,
     _TableContent,
@@ -10,7 +10,7 @@ from apps.word_doc_services.tables.table_definitions import (
 
 from apps.word_doc_services.common_resources import _regular_font_name
 
-from apps.word_doc_services.tables.table_common_resources import (
+from apps.word_doc_services.word_tables.table_common_resources import (
     max_table_width,
     set_default_paragraph_formatting
 )

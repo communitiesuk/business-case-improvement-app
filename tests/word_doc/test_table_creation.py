@@ -1,5 +1,5 @@
 from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
-from apps.word_doc_services.tables.table_definitions import TABLE_DEFINITION
+from apps.word_doc_services.word_tables.table_definitions import TABLE_DEFINITION
 
 def test_create_table_method_adds_table_footer():
     # arrange

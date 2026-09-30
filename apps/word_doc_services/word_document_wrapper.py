@@ -10,11 +10,11 @@ from docx.text.run import Run
 import docx.opc.constants
 import logging
 
-from apps.word_doc_services.tables.generic_table import GenericTable
-from apps.word_doc_services.tables.input_box import InputBox
-from apps.word_doc_services.tables.helpbox import HelpBox
-from apps.word_doc_services.tables.checkbox import CheckBox
-from apps.word_doc_services.tables.table_definitions import TABLE_DEFINITION
+from apps.word_doc_services.word_tables.generic_table import GenericTable
+from apps.word_doc_services.word_tables.input_box import InputBox
+from apps.word_doc_services.word_tables.helpbox import HelpBox
+from apps.word_doc_services.word_tables.checkbox import CheckBox
+from apps.word_doc_services.word_tables.table_definitions import TABLE_DEFINITION
 
 from apps.word_doc_services.common_resources import (
     get_general_font_colour_rgb,
