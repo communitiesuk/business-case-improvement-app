@@ -7,7 +7,7 @@ from docx.table import _Cell
 from docx.text.paragraph import Paragraph
 
 from .table_common_resources import (
-    table_width,
+    max_table_width,
     _blue_help_box_background_hex
 )
 
@@ -34,7 +34,7 @@ class HelpBox:
     def add_help_box(self, doc: doc):
         p: Paragraph | None = None
         tbl = doc.add_table(1, 1)
-        tbl._cells[0].width = table_width
+        tbl._cells[0].width = max_table_width
         self.set_cell_background(tbl._cells[0])
 
         for idx, content in enumerate(self.contents):
@@ -68,7 +68,8 @@ class HelpBox:
             p.paragraph_format.space_after = Pt(8)
 
 
-    '''Summary:
+    '''
+    Summary:
         Set the background to the blue colour we need for help boxes
     '''
     def set_cell_background(self, cell: _Cell):

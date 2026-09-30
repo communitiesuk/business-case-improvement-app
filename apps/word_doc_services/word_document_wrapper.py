@@ -2,11 +2,11 @@ from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import Pt
 from docx.oxml.ns import qn
+import docx.oxml.ns
 from docx.oxml.parser import OxmlElement
 from docx.oxml.xmlchemy import BaseOxmlElement
 from docx.text.run import Run
 
-import docx.oxml.ns
 import docx.opc.constants
 import logging
 
@@ -213,7 +213,7 @@ class BusinessCaseWordDocumentWrapper:
     Summary:
         Add an input box to the Word Document.
     Params:
-        word_limit: optional, guidance on how many words to use in the Input box.
+        word_limit: Optional, guidance on how many words to use in the Input box.
     '''
     def add_input_box(self, word_limit: str):
         input_box = InputBox(word_limit)
@@ -224,7 +224,7 @@ class BusinessCaseWordDocumentWrapper:
     Summary:
         Add a generic Table to the Word Document.
     Params:
-        tbl_def: defines the table data to use.
+        tbl_def: Defines the table data to use.
     '''
     def add_generic_table(self, tbl_def: TABLE_DEFINITION):
         tbl = GenericTable(tbl_def)

@@ -8,9 +8,10 @@ from .table_definitions import (
     HEADER_DIRECTION
 )
 
+from word_doc_services.common_resources import _regular_font_name
+
 from table_common_resources import (
     max_table_width,
-    _regular_font_name,
     set_default_paragraph_formatting
 )
 
@@ -31,9 +32,8 @@ class GenericTable():
         rows_needed = len(tbl_content.headers) if tbl_content.header_direction == HEADER_DIRECTION.VERTICAL else tbl_content.headers_alternate_direction_object_count
         columns_needed = len(tbl_content.headers) if tbl_content.header_direction == HEADER_DIRECTION.HORIZONTAL else tbl_content.headers_alternate_direction_object_count
 
-        tbl = doc.add_table(rows_needed, columns_needed)
-        tbl.style = "Table Grid" # adds gridlines to the table
-
+        tbl = doc.add_table(rows_needed, columns_needed, "Table Grid")
+        
         # equal column widths
         col_width: float  = max_table_width / len(tbl.columns)
 

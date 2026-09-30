@@ -5,7 +5,7 @@ from docx.enum.table import WD_ROW_HEIGHT_RULE
 from docx.shared import Cm, Pt
 
 from .table_common_resources import (
-    table_width,
+    max_table_width,
     set_default_paragraph_formatting
 )
 
@@ -19,20 +19,18 @@ class InputBox:
 
     '''
     Summary:
-        Addds an input box to the 
+        Adds an input box to the Word Document
     '''
     def add_input_box(self, doc: doc):
-        tbl = doc.add_table(1, 1)
+        tbl = doc.add_table(1, 1, "Table Grid")
         box = tbl.rows[0]
 
-        tbl._cells[0].width = table_width
-        tbl.style = "Table Grid" # adds gridlines (in this case, a border) to the table
+        tbl._cells[0].width = max_table_width
         box_paragraph = tbl._cells[0].paragraphs[0]
         set_default_paragraph_formatting(box_paragraph)
 
         box.height = Cm(2.55)
         box.height_rule = WD_ROW_HEIGHT_RULE.AT_LEAST
-
         box_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
         # add a footer to the input box with the word limit
@@ -40,7 +38,7 @@ class InputBox:
             tbl_footer = doc.add_paragraph()
             tbl_footer.paragraph_format.space_before = 0
 
-            r = tbl_footer.add_run("Word count guideline: {} words".format(self.word_limit))
+            r = tbl_footer.add_run(f"Word count guideline: {self.word_limit} words")
             r.font.color.rgb = get_general_font_colour_rgb()
             r.font.size = Pt(12)
             r.font.bold = False

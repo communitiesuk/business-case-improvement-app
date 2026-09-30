@@ -3,9 +3,6 @@ from dataclasses import dataclass, field
 
 from docx.shared import Cm
 
-table_footer_word_count: str = "Word count guideline: {} words"
-# usage: table_footer=f"{table_footer_word_count}".format(300),
-
 class TABLE_DEFINITION(IntEnum):
     DEVELOP_AND_SUPPORT_PROPOSAL = auto()
     EXPECTED_BENEFITS = auto()

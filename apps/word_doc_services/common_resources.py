@@ -1,5 +1,13 @@
 from docx.shared import RGBColor
 
+'''
+This file is for generic variables, values and methods used throughout the Word Doc
+creation logic. This file contains things to be used in Document creation in both
+Paragraphs and Tables and these should be imported from here.
+If it appears that any aren't being used (e.g due to being faded in an IDE) it's probably
+because of the preceding _ to note 'do not change'. Check it is not being imnported elsewhere.
+'''
+
 _regular_font_name: str = "Arial Regular"
 _bold_font_name: str = "Arial Bold"
 _italic_font_name: str = "Arial Italic"
