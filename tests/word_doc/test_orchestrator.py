@@ -41,10 +41,7 @@ def test_orchestrator_for_procurement_route():
     # Act
     orc.populate_word_doc()
     doc = orc.wrapper.doc
-
-    document_location: str = '/Users/tomgovier/Documents/RandomWordGarbage/{}.docx'
-    doc.save(document_location.format(f"ModelTesting-blahblahblah"))
-
+    
     p = doc.paragraphs[0]
     r = p.runs[0]
 
