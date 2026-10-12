@@ -65,6 +65,9 @@ def get_procurement_exit(triage_data: TriageData) -> str:
 
     if best_describes_your_situation == hire_contracted_workers_to_fill_temporary_capacity_gap:
         return "exit-to-download-template-hrbp-contingent-labour-route"
+
+    if best_describes_your_situation == grant_choice:
+        return "exit-to-download-template-grant-route"
  
     return "we-could-not-find-the-right-process-for-you"
 
