@@ -1,6 +1,5 @@
 
-from .sections import Section
-from enum import IntEnum, StrEnum, auto
+from enum import IntEnum, auto
 
 from .sections import (
     Section, 
@@ -21,14 +20,14 @@ from .sections import (
 from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
 from apps.triage.triage_data import TriageData
 
-
 class RouteChosen(IntEnum):
     Procurement = auto()
     Grants = auto()
     Undetermined= auto()
 
 '''
-list of all the sections that need to go into a template
+List of all the sections that need to go into a template.
+Listed as types to avoid instantiating the classes without reason
 '''
 sections_per_template: dict[RouteChosen, list[type[Section]]] = {
     RouteChosen.Procurement: [
@@ -57,7 +56,10 @@ class WordDocumentOrchestrator():
         self.route: RouteChosen
         self.wrapper: BusinessCaseWordDocumentWrapper = BusinessCaseWordDocumentWrapper()
 
-
+    '''
+    Summary:
+        Find the sections needed, determined by the route, and then instantiate them
+    '''
     def __determine_sections_to_create(self):
         route: RouteChosen = self.__determine_route()
 
@@ -73,6 +75,10 @@ class WordDocumentOrchestrator():
 
         return RouteChosen.Undetermined
 
+    '''
+    Summary:
+        Generic section so created here. Essentially an index 
+    '''
     def __create_what_youll_be_asked(self):
         self.wrapper.add_h2_section_header("What you'll be asked in this document:")
 
@@ -84,7 +90,10 @@ class WordDocumentOrchestrator():
             header_titles.insert(0, header_title)
             self.wrapper.add_closely_spaced_content(header_titles)
 
-
+    '''
+    Summary:
+        Generic section so created here.
+    '''
     def __create_before_you_start(self):
         self.wrapper.add_empty_paragraph()
         self.wrapper.add_paragraph("Before you start", True)
@@ -100,7 +109,7 @@ class WordDocumentOrchestrator():
 
     '''
     Summary:
-        return all sections, or sections of a specific type
+        return all sections
     '''
     def __get_list_of_filtered_sections(self, header_section_wanted: HeaderSection) -> list[Section]:
         result: list[Section] | None =  [s for s in self.sections_required if s.header_section == header_section_wanted]
@@ -119,9 +128,11 @@ class WordDocumentOrchestrator():
         self.wrapper.add_h2_section_header(f"This is your business justification case template for {business_case_title}")
         self.__create_what_youll_be_asked()
         self.__create_before_you_start()
+        # add section is a new page before the main content
         self.wrapper.doc.add_section()
         self.wrapper.add_h1_section_header(business_case_title)
 
+        # loop each section, and for each one call the method for creating the section.
         for section in self.sections_required:
             section.section_number = self.sections_required.index(section) + 1
             section.create_section(self.wrapper)
