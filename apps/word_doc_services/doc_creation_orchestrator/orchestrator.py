@@ -14,7 +14,8 @@ from .sections import (
     OtherBusinessCases,
     SubjectMatterExpert,
     SroOrScsApproval,
-    SupportingDocuments
+    SupportingDocuments,
+    HeaderSection
 )
 
 from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
@@ -25,12 +26,6 @@ class RouteChosen(IntEnum):
     Procurement = auto()
     Grants = auto()
     Undetermined= auto()
-
-
-class HeaderSection(StrEnum):
-    OVERVIEW = "Overview"
-    SECTIONS = "Sections"
-    APPROVALS_AND_SUPPORTING_INFORMATION = "Approvals and supporting information"
 
 '''
 list of all the sections that need to go into a template

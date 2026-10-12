@@ -106,7 +106,7 @@ class StrategicCase(Section):
         wrapper.add_input_box(150)
 
         
-class OptionsAnalysis (Section):
+class OptionsAnalysis(Section):
 
     @property
     def section_title(self) -> str: return "Options analysis"
