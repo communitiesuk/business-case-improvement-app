@@ -77,7 +77,8 @@ class TriageData():
     def is_procurement_route_completed(self) -> bool:
         correct_options_chosen = self.which_option_best_describes_what_is_trying_to_be_done in {
                 procure_goods_and_services_from_third_party,
-                hire_contracted_workers_to_fill_temporary_capacity_gap
+                hire_contracted_workers_to_fill_temporary_capacity_gap,
+                grant_choice
             }
             
         return (not self.is_novel and
