@@ -377,6 +377,7 @@ def test_grant_including_general_grant_choice_routes():
         "Any Answer",
         "Any Answer",
         general_grant_choice,
+        "competitive",
         "title",
         "details"
     ]

@@ -71,7 +71,6 @@ class TriageData():
     def funding_allocation(self):
         return self.triage_data.get(funding_allocation, "")
 
-
     @property
     def is_commission_research(self) -> bool:
         is_not_novel = self.triage_data.get(novel_repercussive_contentious_hmt_consent, None) == "no"
@@ -108,6 +107,8 @@ class TriageData():
 
     @property
     def is_grants_route_completed(self) -> bool:
+        funding_question_handled_correctly: bool = self.grant_routes == general_grant_choice and self.funding_allocation != "" or self.grant_routes != general_grant_choice
+
         return(
             not self.is_novel and
             not self.is_pilot and
@@ -117,7 +118,7 @@ class TriageData():
             self.grant_covered_countries != "" and
             self.eligible_organisations != "" and
             self.grant_routes != "" and
-            self.funding_allocation != "" and
+            funding_question_handled_correctly and
             self.business_case_title != "" and
             self.summary != "")
 

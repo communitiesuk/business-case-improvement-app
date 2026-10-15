@@ -741,9 +741,9 @@ ROUTING = {
     (grant_notice, "*"): grant_covered_countries,
     (grant_covered_countries, "*"): eligible_organisations,
     (eligible_organisations, "*"): grant_routes,
-    (grant_routes, formula_grant_choice): funding_allocation,
+    (grant_routes, general_grant_choice): funding_allocation,
     (grant_routes, grant_aid_choice): give_your_bjc_a_name,
-    (grant_routes, general_grant_choice): give_your_bjc_a_name,
+    (grant_routes, formula_grant_choice): give_your_bjc_a_name,
     (funding_allocation, "*"): give_your_bjc_a_name,
 }
 

@@ -60,7 +60,7 @@ class ExecutiveSummarySection(Section):
     def header_section(self) -> HeaderSection: return HeaderSection.OVERVIEW
 
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
-        wrapper.add_paragraph(f"{self.section_number}. {self.section_title}", True)
+        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
         wrapper.add_paragraph("Provide a concise overview of the proposal. Summarise what you are proposing, why it is necessary, and the decision you need approval for.")
         wrapper.add_help_box([
             "Here's an example executive summary:",
@@ -340,7 +340,7 @@ class ManagementCase(Section):
         wrapper.add_paragraph("Management case sets out the approach to delivery, assesses key risks, and presents the monitoring and evaluation and benefits realisation plans.")
         wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_RISK_MGMT)
         wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_PERFORMANCE)
-        wrapper.add_paragraph(only_fill_out_below_if.format("this is a Gneral Grants case"))
+        wrapper.add_paragraph(only_fill_out_below_if.format("this is a General Grants case"))
         wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_GENERAL_GRANTS)
         wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_CLASSIFICATION)
 
@@ -415,7 +415,7 @@ class SupportingDocuments(Section):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
         wrapper.add_paragraph("Add a link to each supporting document, with its title and short description.")
         wrapper.add_empty_paragraph()
-        wrapper.add_paragraph("You're nearly there! Once you recieve approval:", True)
+        wrapper.add_paragraph("You're nearly there! Once you receive approval:", True)
         wrapper.add_paragraph("Once you have received all required approvals, use your unique link below to return to the business case service and upload your completed business case.")
         wrapper.add_hyperlink("https://www.google.com", "Link: [completion_link]", "[completion_link]")
         wrapper.add_paragraph("If you have problems uploading your business case, contact")

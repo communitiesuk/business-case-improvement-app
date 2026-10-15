@@ -155,7 +155,7 @@ TABLE_REGISTRY = [
         definition=TABLE_DEFINITION.RISK_TABLE,
         header_direction=HEADER_DIRECTION.VERTICAL,
         headers=[
-            "Desribe the risk",
+            "Describe the risk",
             "What's the impact if this risk happens?",
             "Risk scores:",
             "Likelihood score =",
@@ -363,7 +363,7 @@ TABLE_REGISTRY = [
         definition=TABLE_DEFINITION.COMMERCIAL_CASE_GENERAL_VIA_DIRECT_AWARD,
         header_direction=HEADER_DIRECTION.VERTICAL,
         headers=[
-            "Describe how the proposed grant recipient has prepared its budget estimates"
+            "Describe how the proposed grant recipient has prepared its budget estimates",
             "Describe your assessment of value for money and/or the clear criteria for the award of the proposed grant if it is a criteria-based fund"
         ]
     ),
