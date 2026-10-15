@@ -30,6 +30,8 @@ def get_result_from_answers(answers: dict) -> str:
         
         if triage_data.is_procurement_route_completed:
             return get_procurement_exit(triage_data)
+        elif triage_data.is_grants_route_completed:
+            return "exit-to-download-template-grant-route"
         else:
             if triage_data.is_three_stage_process_novel_or_pilot:
                 return "you-need-to-follow-a-three-stage-process-novel-or-pilot"

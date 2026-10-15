@@ -13,7 +13,8 @@ from .sections import (
     SubjectMatterExpert,
     SroOrScsApproval,
     SupportingDocuments,
-    HeaderSection
+    HeaderSection,
+    EconomicCase
 )
 
 from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
@@ -38,7 +39,16 @@ sections_per_template: dict[RouteChosen, list[type[Section]]] = {
         SupportingDocuments
     ],
     RouteChosen.Grants:[
-
+        ParticipantsAndOrganisationalDetails,
+        ExecutiveSummarySection,
+        EconomicCase,
+        CommercialCase,
+        FinancialCase,
+        ManagementCase,
+        OtherBusinessCases,
+        SubjectMatterExpert,
+        SroOrScsApproval,
+        SupportingDocuments
     ]
 }
 
@@ -60,12 +70,15 @@ class WordDocumentOrchestrator():
         if route == RouteChosen.Undetermined:
             return
 
-        self.sections_required = [c() for c in sections_per_template[route]]
+        self.sections_required = [c(route) for c in sections_per_template[route]]
          
 
     def __determine_route(self) -> RouteChosen:
         if self.triage_data.is_procurement_route_completed:
             return RouteChosen.Procurement
+        
+        if self.triage_data.is_grants_route_completed:
+            return RouteChosen.Grants
 
         return RouteChosen.Undetermined
 
@@ -123,7 +136,7 @@ class WordDocumentOrchestrator():
         self.__create_what_youll_be_asked()
         self.__create_before_you_start()
         # add section is a new page before the main content
-        self.wrapper.doc.add_section()
+        self.wrapper.add_empty_paragraph()
         self.wrapper.add_h1_section_header(business_case_title)
 
         # loop each section, and for each one call the method for creating the section.

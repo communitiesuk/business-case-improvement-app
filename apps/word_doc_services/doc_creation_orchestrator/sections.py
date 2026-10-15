@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 from enum import StrEnum
+from .enums import RouteChosen
 
 from apps.word_doc_services.word_tables.table_definitions import TABLE_DEFINITION
 from apps.word_doc_services.word_document_wrapper import BusinessCaseWordDocumentWrapper
 
+only_fill_out_below_if: str = 'Only fill out the below if {}'
 
 class HeaderSection(StrEnum):
     OVERVIEW = "Overview"
@@ -13,8 +15,12 @@ class HeaderSection(StrEnum):
 
 class Section(ABC):
 
-    def __init__(self):
+    def __init__(self, route: RouteChosen):
+        self.route = route
         self.section_number: int = -1
+
+    def route_chosen(self) -> RouteChosen:
+        return self.route
 
     @property
     @abstractmethod
@@ -54,7 +60,7 @@ class ExecutiveSummarySection(Section):
     def header_section(self) -> HeaderSection: return HeaderSection.OVERVIEW
 
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
-        wrapper.add_paragraph(f"{self.section_number}. {self.section_title}", True)
+        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
         wrapper.add_paragraph("Provide a concise overview of the proposal. Summarise what you are proposing, why it is necessary, and the decision you need approval for.")
         wrapper.add_help_box([
             "Here's an example executive summary:",
@@ -63,6 +69,9 @@ class ExecutiveSummarySection(Section):
             "This will improve onboarding for new starters to reduce friction and save HR time when vetting and setting up new accounts."
         ])
         wrapper.add_input_box()
+
+        if(self.route == RouteChosen.Grants):
+            wrapper.add_generic_table(TABLE_DEFINITION.GRANT_VALUE)
 
 
 class StrategicCase(Section):
@@ -142,8 +151,7 @@ class CommercialCase(Section):
     @property
     def header_section(self): return HeaderSection.SECTIONS
 
-    def create_section(self, wrapper):
-        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: how will you procure this?")
+    def create_commercial_case_for_procurement(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_paragraph(f"{self.section_number}a. What will your recommended option deliver?", True)
         wrapper.add_bullet_point_list(["Describe the goods, services, works or activities that will be delivered. Include the main outputs and any significant items that are not included."])
         wrapper.add_input_box(100)
@@ -168,6 +176,31 @@ class CommercialCase(Section):
         wrapper.add_generic_table(TABLE_DEFINITION.ADDITIONAL_PROCUREMENT_AND_COMMERCIAL_INFORMATION)
 
 
+    def create_commercial_case_for_grants(self, wrapper: BusinessCaseWordDocumentWrapper):
+        wrapper.add_paragraph("Commercial case assesses whether a realistic and credible commercial deal can be struck and who will manage which risks")
+        wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE)
+        wrapper.add_paragraph(only_fill_out_below_if.format("Grant is in Aid"))
+        wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE_IN_AID)
+        wrapper.add_paragraph(only_fill_out_below_if.format("Grant is General"))
+        wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE_IF_GENERAL)
+        wrapper.add_paragraph(only_fill_out_below_if.format("Grant is a Formula"))
+        wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE_FORMULA)
+        wrapper.add_paragraph(only_fill_out_below_if.format("Grant is General via Direct Award"))
+        wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE_GENERAL_VIA_DIRECT_AWARD)
+        wrapper.add_paragraph("Provide a list of key milestones and associated activities for mobilisation of the grant scheme or, in the case of a direct/non-competitive award or an ALB/OGD project, the key steps to")
+        wrapper.add_input_box()
+
+
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
+        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: how will you procure this?")
+
+
+        if self.route == RouteChosen.Procurement:
+            self.create_commercial_case_for_procurement(wrapper)
+        elif self.route == RouteChosen.Grants:
+            self.create_commercial_case_for_grants(wrapper)
+        
+
 class FinancialCase(Section):
 
     @property
@@ -176,8 +209,16 @@ class FinancialCase(Section):
     @property
     def header_section(self): return HeaderSection.SECTIONS
 
-    def create_section(self, wrapper):
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title} - can we afford it?")
+
+        if self.route == RouteChosen.Procurement:
+            self.create_financial_case_for_procurement(wrapper)
+        elif self.route == RouteChosen.Grants:
+            self.create_financial_case_for_grants(wrapper)
+
+
+    def create_financial_case_for_procurement(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_paragraph(f"{self.section_number}a. What is the whole life cost?")
         wrapper.add_generic_table(TABLE_DEFINITION.WHOLE_LIFE_COST)
         wrapper.add_paragraph(f"{self.section_number}b. How will this proposal be funded? Select one option.", True)
@@ -226,6 +267,11 @@ class FinancialCase(Section):
         )
 
 
+    def create_financial_case_for_grants(self, wrapper: BusinessCaseWordDocumentWrapper):
+        wrapper.add_paragraph("Financial case looks at the impact of the proposal on the public sector budget")
+        wrapper.add_generic_table(TABLE_DEFINITION.FINANCIAL_CASE)
+
+
 class ManagementCase(Section):
 
     @property
@@ -234,8 +280,7 @@ class ManagementCase(Section):
     @property
     def header_section(self): return HeaderSection.SECTIONS
 
-    def create_section(self, wrapper):
-        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: can this be delivered?")
+    def create_management_case_procurement(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_paragraph(f"{self.section_number}a. What is your delivery plan?", True)
         wrapper.add_paragraph("What are the start and end dates")
         wrapper.add_generic_table(TABLE_DEFINITION.START_END_DATE)
@@ -291,6 +336,24 @@ class ManagementCase(Section):
         wrapper.add_input_box(100)
 
 
+    def create_management_case_grants(self, wrapper: BusinessCaseWordDocumentWrapper):
+        wrapper.add_paragraph("Management case sets out the approach to delivery, assesses key risks, and presents the monitoring and evaluation and benefits realisation plans.")
+        wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_RISK_MGMT)
+        wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_PERFORMANCE)
+        wrapper.add_paragraph(only_fill_out_below_if.format("this is a General Grants case"))
+        wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_GENERAL_GRANTS)
+        wrapper.add_generic_table(TABLE_DEFINITION.MANAGEMENT_CASE_CLASSIFICATION)
+
+
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
+        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: can this be delivered?")
+
+        if self.route == RouteChosen.Procurement:
+            self.create_management_case_procurement(wrapper)
+        elif self.route == RouteChosen.Grants:
+            self.create_management_case_grants(wrapper)
+
+
 class OtherBusinessCases(Section):
 
     @property
@@ -299,7 +362,7 @@ class OtherBusinessCases(Section):
     @property
     def header_section(self): return HeaderSection.SECTIONS
 
-    def create_section(self, wrapper):
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
         wrapper.add_paragraph("If applicable, identify any other business cases in development, pending approval or already approved which could be affected by this case, could affect this case or otherwise seek approval for spend that relates to the same overall piece of work.")
         wrapper.add_generic_table(TABLE_DEFINITION.OTHER_BUSINESS_CASES)
@@ -313,7 +376,7 @@ class SubjectMatterExpert(Section):
     @property
     def header_section(self): return HeaderSection.APPROVALS_AND_SUPPORTING_INFORMATION
 
-    def create_section(self, wrapper):
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
         wrapper.add_paragraph("The subject matter experts (SMEs) who reviewed the proposal must complete this section. All mandatory SME assurance must be complete before the proposal is sent to the Senior Responsible Owner (SRO) or Senior Civil Servant (SCS) for approval.")
         wrapper.add_generic_table(TABLE_DEFINITION.SME_AREA_COMMERCIAL)
@@ -332,7 +395,7 @@ class SroOrScsApproval(Section):
     @property
     def header_section(self): return HeaderSection.APPROVALS_AND_SUPPORTING_INFORMATION
 
-    def create_section(self, wrapper):
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. SRO or SCS approval")
         wrapper.add_generic_table(TABLE_DEFINITION.SRO_OR_SCS_APPROVAL)
         wrapper.add_paragraph("Additional approvals (if applicable)", True)
@@ -348,13 +411,30 @@ class SupportingDocuments(Section):
     @property
     def header_section(self): return HeaderSection.APPROVALS_AND_SUPPORTING_INFORMATION
 
-    def create_section(self, wrapper):
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
         wrapper.add_paragraph("Add a link to each supporting document, with its title and short description.")
         wrapper.add_empty_paragraph()
-        wrapper.add_paragraph("You're nearly there! Once you recieve approval:", True)
+        wrapper.add_paragraph("You're nearly there! Once you receive approval:", True)
         wrapper.add_paragraph("Once you have received all required approvals, use your unique link below to return to the business case service and upload your completed business case.")
         wrapper.add_hyperlink("https://www.google.com", "Link: [completion_link]", "[completion_link]")
         wrapper.add_paragraph("If you have problems uploading your business case, contact")
         wrapper.add_hyperlink("Businesscaseproject@communities.gov.uk", "Businesscaseproject@communities.gov.uk.", "Businesscaseproject@communities.gov.uk", True)
         wrapper.add_paragraph("To receive the funding, you must also raise a buying request in SAP.")
+
+class EconomicCase(Section):
+
+    @property
+    def section_title(self) -> str: return "Economic Case"
+
+    @property
+    def header_section(self) -> HeaderSection: return HeaderSection.SECTIONS
+
+    def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
+        wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}")
+        wrapper.add_paragraph("Economic case sets out the net value to society of the intervention compared to continuing with Business As Usual (defined as the continuation of current arrangements, as if the proposal under consideration were not to be implemented).")
+        wrapper.add_generic_table(TABLE_DEFINITION.ECONOMIC_CASE)
+        wrapper.add_paragraph("Only complete the following table if the Grant is for Local Authority.")
+        wrapper.add_generic_table(TABLE_DEFINITION.ECONOMIC_CASE_LOCAL_AUTH)
+
+
