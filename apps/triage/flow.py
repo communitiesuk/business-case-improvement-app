@@ -57,7 +57,7 @@ QUESTIONS = [
     },
     {
         "slug": changing_or_asking_for_additional_money_for_existing_business_case,
-        "title": "Are you making a change to, or asking for additional money for an existing business case???",
+        "title": "Are you making a change to, or asking for additional money for an existing business case?",
         "type": "radio",
         "choices": [
             ("yes", "Yes"),
