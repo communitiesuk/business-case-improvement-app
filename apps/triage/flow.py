@@ -397,7 +397,7 @@ QUESTIONS = [
         "slug": is_this_request_a_pilot_notice,
         "title": 'What you need to know',
         "type": "notice",
-        "content": f"""<p>Before you start drafting a business case, speak to your <strong>Finance Business Partner (FBP)</strong></a> and/or a <strong>Commercial colleague</strong>.</p>
+        "content": f"""<p>Before you start drafting a business case, speak to your <strong>Finance Business Partner (FBP)</strong> and/or a <strong>Commercial colleague</strong>.</p>
         <p>Your proposal is likely to need the standard 3-stage business case process. It may also need approval from the Investment Sub-Committee (ISC) and, in some cases, His Majesty's Treasury (HM Treasury).</p>
         <p>The template you need depends on the stage your proposal has reached. This could be a:</p>
         <ul class="govuk-list govuk-list--bullet">
