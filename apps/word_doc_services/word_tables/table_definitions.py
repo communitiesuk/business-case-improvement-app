@@ -262,7 +262,7 @@ TABLE_REGISTRY = [
             _ExtraCellContent(row=2, column=1, content="e.g. Cabinet office spend control"),
             _ExtraCellContent(row=2, column=2, content="e.g. Cabinet office"),
             _ExtraCellContent(row=2, column=3, content="e.g. 11/05/2026"),
-            _ExtraCellContent(row=2, column=4, content="e.g. Cabinet office spend control")
+            _ExtraCellContent(row=2, column=4, content="Insert links")
         ]
     ),
     _TableContent(
@@ -364,7 +364,8 @@ TABLE_REGISTRY = [
         header_direction=HEADER_DIRECTION.VERTICAL,
         headers=[
             "Describe how the proposed grant recipient has prepared its budget estimates",
-            "Describe your assessment of value for money and/or the clear criteria for the award of the proposed grant if it is a criteria-based fund"
+            "Describe your assessment of value for money and/or the clear criteria for the award of the proposed grant if it is a criteria-based fund",
+            "Include a clear, robust justification for why you have chosen a non-competitive route in this case."
         ]
     ),
     _TableContent(

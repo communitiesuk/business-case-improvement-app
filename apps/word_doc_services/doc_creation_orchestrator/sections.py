@@ -36,7 +36,6 @@ class Section(ABC):
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         pass
 
-
 class ParticipantsAndOrganisationalDetails(Section):
 
     @property
@@ -84,13 +83,13 @@ class StrategicCase(Section):
     
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: why is this needed?")
-        wrapper.add_paragraph(f"{self.section_number}a. What is the purpose of your proposal, and what problem or opportunity does it address?")
+        wrapper.add_paragraph(f"{self.section_number}a. What is the purpose of your proposal, and what problem or opportunity does it address?", True)
         wrapper.add_bullet_point_list(["Describe the current situation. Who does it affect and why change is needed?"])
         wrapper.add_input_box(150)
         wrapper.add_paragraph(f"{self.section_number}b. Why is action needed now?", True)
         wrapper.add_bullet_point_list(["Explain why action is needed now and the likely impact if the proposal is delayed or not approved."])
         wrapper.add_input_box(80)
-        wrapper.add_paragraph(f"{self.section_number}c. How long will the proposal take to deliver?")
+        wrapper.add_paragraph(f"{self.section_number}c. How long will the proposal take to deliver?", True)
         wrapper.add_paragraph("Give the planned start and end dates, or the expected duration if exact dates are not yet known.")
         wrapper.add_input_box(10)
         wrapper.add_paragraph(f"{self.section_number}d. How does this proposal support MHCLG's goals and objectives?", True)
@@ -151,7 +150,7 @@ class CommercialCase(Section):
     @property
     def header_section(self): return HeaderSection.SECTIONS
 
-    def create_commercial_case_for_procurement(self, wrapper: BusinessCaseWordDocumentWrapper):
+    def create_commercial_case_for_procurement_or_general(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_paragraph(f"{self.section_number}a. What will your recommended option deliver?", True)
         wrapper.add_bullet_point_list(["Describe the goods, services, works or activities that will be delivered. Include the main outputs and any significant items that are not included."])
         wrapper.add_input_box(100)
@@ -162,7 +161,7 @@ class CommercialCase(Section):
         wrapper.add_paragraph(f"{self.section_number}c. Why is this the right way to buy or obtain what is needed?", True)
         wrapper.add_paragraph("Explain why this route is appropriate for the value, complexity, timescales and market. Consider:")
         wrapper.add_bullet_point_list([
-            "why the route is complient",
+            "why the route is compliant",
             "how it supports value for money",
             "whether the market can deliver what is needed",
             "whether the route supports the required timescales"
@@ -171,9 +170,11 @@ class CommercialCase(Section):
         wrapper.add_paragraph(f"{self.section_number}d. Could any supplier, contract or market issues affect delivery?", True)
         wrapper.add_bullet_point_list(["Describe any supplier, contract or market issues that could affect procurement or delivery."])
         wrapper.add_input_box(50)
-        wrapper.add_paragraph(f"{self.section_number}e. Additional procurement and commercial information", True)
-        wrapper.add_bullet_point_list(["If you have the information available and it's applicable, please complete the following fields. If you're unsure, work with your Commercial SME to complete this section."])
-        wrapper.add_generic_table(TABLE_DEFINITION.ADDITIONAL_PROCUREMENT_AND_COMMERCIAL_INFORMATION)
+
+        if self.route == RouteChosen.Procurement:
+            wrapper.add_paragraph(f"{self.section_number}e. Additional procurement and commercial information", True)
+            wrapper.add_bullet_point_list(["If you have the information available and it's applicable, please complete the following fields. If you're unsure, work with your Commercial SME to complete this section."])
+            wrapper.add_generic_table(TABLE_DEFINITION.ADDITIONAL_PROCUREMENT_AND_COMMERCIAL_INFORMATION)
 
 
     def create_commercial_case_for_grants(self, wrapper: BusinessCaseWordDocumentWrapper):
@@ -187,16 +188,25 @@ class CommercialCase(Section):
         wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE_FORMULA)
         wrapper.add_paragraph(only_fill_out_below_if.format("Grant is General via Direct Award"))
         wrapper.add_generic_table(TABLE_DEFINITION.COMMERCIAL_CASE_GENERAL_VIA_DIRECT_AWARD)
-        wrapper.add_paragraph("Provide a list of key milestones and associated activities for mobilisation of the grant scheme or, in the case of a direct/non-competitive award or an ALB/OGD project, the key steps to")
+        wrapper.add_paragraph("Provide a list of key milestones and associated activities for mobilisation of the grant scheme or, in the case of a direct/non-competitive award or an ALB/OGD project the key steps to negotiate an agreement and to deliver funded actions. Such as:")
+        wrapper.add_bullet_point_list([
+            "Timescales for publication of a prospectus/application guidance",
+            "Application timescales and/or submission of a project proposal for a direct award",
+            "Assessment timescales for competitive bids and/or a project proposal for a direct award grant",
+            "Funding agreement, MOU (or equivalent) completion",
+            "Funded activities start date",
+            "First Payment Date",
+            "Frequency of financial claims",
+            "Frequency of performance monitoring activities, including formal Annual and/or Final Reconciliation reviews"
+        ])
         wrapper.add_input_box()
 
 
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: how will you procure this?")
 
-
-        if self.route == RouteChosen.Procurement:
-            self.create_commercial_case_for_procurement(wrapper)
+        if self.route == RouteChosen.Procurement or self.route == RouteChosen.General:
+            self.create_commercial_case_for_procurement_or_general(wrapper)
         elif self.route == RouteChosen.Grants:
             self.create_commercial_case_for_grants(wrapper)
         
@@ -219,9 +229,9 @@ class FinancialCase(Section):
 
 
     def create_financial_case_for_procurement(self, wrapper: BusinessCaseWordDocumentWrapper):
-        wrapper.add_paragraph(f"{self.section_number}a. What is the whole life cost?")
+        wrapper.add_paragraph(f"{self.section_number}a. What is the whole life cost?", True)
         wrapper.add_generic_table(TABLE_DEFINITION.WHOLE_LIFE_COST)
-        wrapper.add_paragraph(f"{self.section_number}b. How will this proposal be funded? Select one option.", True)
+        wrapper.add_paragraph(f"{self.section_number}b. How will this proposal be funded? Use an 'X' to select one option.", True)
         wrapper.add_checkbox([
             "Existing approved budgets. Select this if the full cost is already included in an approved budget for the relevant financial year. Go to question 6d.",
             "New funding request above business planning allocations. Select this if any of the funding needed has not been included in an approved budget. Go to question 6c."

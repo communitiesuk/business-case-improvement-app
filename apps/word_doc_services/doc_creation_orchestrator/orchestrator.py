@@ -38,10 +38,23 @@ sections_per_template: dict[RouteChosen, list[type[Section]]] = {
         SroOrScsApproval,
         SupportingDocuments
     ],
-    RouteChosen.Grants:[
+    RouteChosen.Grants: [
         ParticipantsAndOrganisationalDetails,
         ExecutiveSummarySection,
         EconomicCase,
+        CommercialCase,
+        FinancialCase,
+        ManagementCase,
+        OtherBusinessCases,
+        SubjectMatterExpert,
+        SroOrScsApproval,
+        SupportingDocuments
+    ],
+    RouteChosen.General: [
+        ParticipantsAndOrganisationalDetails,
+        ExecutiveSummarySection,
+        StrategicCase,
+        OptionsAnalysis,
         CommercialCase,
         FinancialCase,
         ManagementCase,
@@ -79,6 +92,9 @@ class WordDocumentOrchestrator():
         
         if self.triage_data.is_grants_route_completed:
             return RouteChosen.Grants
+
+        if self.triage_data.is_general_route_completed:
+            return RouteChosen.General
 
         return RouteChosen.Undetermined
 
