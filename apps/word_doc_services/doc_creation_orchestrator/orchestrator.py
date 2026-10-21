@@ -70,7 +70,6 @@ class WordDocumentOrchestrator():
     def __init__(self, answers: dict[str, str]):
         self.triage_data: TriageData = TriageData(answers)
         self.sections_required: list[Section] = []
-        self.route: RouteChosen
         self.wrapper: BusinessCaseWordDocumentWrapper = BusinessCaseWordDocumentWrapper()
 
     '''
