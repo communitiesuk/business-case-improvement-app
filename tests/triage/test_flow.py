@@ -202,7 +202,7 @@ def test_procurement_routes():
         "no",
         "Any Answer",
         procure_goods_and_services_from_third_party,
-        spend_on_corporate_activities,
+        procuring_something_else,
         "no",
         "Any Answer",
         "title",

@@ -62,10 +62,7 @@ def get_procurement_exit(triage_data: TriageData) -> str:
     if triage_data.where_is_the_budget_held == AnswerConstants.DIGITAL_STRING.value:
         return "procurement_route_digital_spend"
     
-    if triage_data.which_option_best_describes_what_is_trying_to_be_done == procure_goods_and_services_from_third_party:
-        return "exit-to-download-template-procurement-route"
-
-    return "we-could-not-find-the-right-process-for-you"
+    return "exit-to-download-template-procurement-route"
 
 
 def get_general_exit(triage_data: TriageData):
