@@ -107,8 +107,6 @@ class TriageData():
                 self.summary != "") and (self.where_is_the_budget_held == "Digital" 
                                             or self.which_option_best_describes_the_spend != spend_on_corporate_activities)
     
-    
-
     @property
     def is_general_route_completed(self) -> bool:
         return (not self.is_novel and
