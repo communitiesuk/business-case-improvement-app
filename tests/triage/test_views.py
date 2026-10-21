@@ -259,7 +259,7 @@ def test_procurement_template_route(client, db):
     assert business_case is not None
     assert business_case.name == "*"
     assert business_case.directorate == "*"
-    assert business_case.type == "Corporate Spend FBP"
+    assert business_case.type == "Procurement"
     assert business_case.lead_contact == "Test User"
     assert business_case.summary == "*"
     assert business_case.status == BusinessCase.Status.ACTIVE

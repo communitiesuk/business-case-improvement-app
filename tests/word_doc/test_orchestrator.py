@@ -104,9 +104,6 @@ def test_orchestrator_for_procurement_route():
     orc.populate_word_doc()
     doc = orc.wrapper.doc
 
-    document_location: str = '/Users/tomgovier/Documents/RandomWordGarbage/{}.docx'
-    doc.save(document_location.format(f"WordDoc Procurement"))
-
     p = doc.paragraphs[0]
     r = p.runs[0]
 
@@ -156,9 +153,6 @@ def test_orchestrator_for_grants_route():
     orc.populate_word_doc()
     doc = orc.wrapper.doc
 
-    document_location: str = '/Users/tomgovier/Documents/RandomWordGarbage/{}.docx'
-    doc.save(document_location.format(f"WordDoc Grants"))
-
     p = doc.paragraphs[0]
     r = p.runs[0]
 
@@ -207,9 +201,6 @@ def test_orchestrator_for_general_route():
     # Act
     orc.populate_word_doc()
     doc = orc.wrapper.doc
-
-    document_location: str = '/Users/tomgovier/Documents/RandomWordGarbage/{}.docx'
-    doc.save(document_location.format(f"WordDoc General"))
 
     p = doc.paragraphs[0]
     r = p.runs[0]

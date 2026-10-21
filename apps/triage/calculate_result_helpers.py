@@ -58,12 +58,11 @@ def determine_is_less_than_12k_exit_route(triage_data: TriageData) -> str:
 
 
 def get_procurement_exit(triage_data: TriageData) -> str:
-    best_describes_your_situation: str  = triage_data.which_option_best_describes_what_is_trying_to_be_done
-
-    if triage_data.where_is_the_budget_held == AnswerConstants.DIGITAL_STRING.value:
-        return "exit-to-download-template-procurement-route"
     
-    if best_describes_your_situation == procure_goods_and_services_from_third_party:
+    if triage_data.where_is_the_budget_held == AnswerConstants.DIGITAL_STRING.value:
+        return "procurement_route_digital_spend"
+    
+    if triage_data.which_option_best_describes_what_is_trying_to_be_done == procure_goods_and_services_from_third_party:
         return "exit-to-download-template-procurement-route"
 
     return "we-could-not-find-the-right-process-for-you"
@@ -78,7 +77,6 @@ def get_general_exit(triage_data: TriageData):
         return "exit-to-download-template-hrbp-contingent-labour-route"
             
     if triage_data.which_option_best_describes_the_spend == procuring_something_else:
-        return "exit-to-download-template-procurement-route"
+        return "exit-to-download-template-procurement-route" # this UI requires building
 
     return "we-could-not-find-the-right-process-for-you"
-

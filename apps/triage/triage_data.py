@@ -98,8 +98,9 @@ class TriageData():
         return (not self.is_novel and
                 not self.is_pilot and
                 not self.is_existing_programme and
-                self.where_is_the_budget_held == "Digital"
-                    or self.which_option_best_describes_what_is_trying_to_be_done == procure_goods_and_services_from_third_party and
+                self.where_is_the_budget_held != "" and
+                self.which_option_best_describes_the_spend != "" and
+                self.which_option_best_describes_what_is_trying_to_be_done == procure_goods_and_services_from_third_party and
                 self.is_corporate_spend_or_procurement and
                 self.business_case_title != "" and
                 self.summary != "")
@@ -110,8 +111,8 @@ class TriageData():
                 not self.is_pilot and
                 not self.is_existing_programme and
                 self.where_is_the_budget_held != "Digital" and
-                self.which_option_best_describes_what_is_trying_to_be_done == hire_contracted_workers_to_fill_temporary_capacity_gap and
-                self.is_corporate_spend_or_procurement and
+                self.which_option_best_describes_what_is_trying_to_be_done == hire_contracted_workers_to_fill_temporary_capacity_gap 
+                    or self.which_option_best_describes_the_spend == spend_on_corporate_activities and
                 self.business_case_title != "" and
                 self.summary != "")
 
