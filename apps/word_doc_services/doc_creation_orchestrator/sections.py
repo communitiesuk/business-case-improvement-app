@@ -222,7 +222,7 @@ class FinancialCase(Section):
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title} - can we afford it?")
 
-        if self.route == RouteChosen.Procurement:
+        if self.route == RouteChosen.Procurement or self.route == RouteChosen.General:
             self.create_financial_case_for_procurement(wrapper)
         elif self.route == RouteChosen.Grants:
             self.create_financial_case_for_grants(wrapper)
@@ -358,7 +358,7 @@ class ManagementCase(Section):
     def create_section(self, wrapper: BusinessCaseWordDocumentWrapper):
         wrapper.add_h2_section_header(f"{self.section_number}. {self.section_title}: can this be delivered?")
 
-        if self.route == RouteChosen.Procurement:
+        if self.route == RouteChosen.Procurement or self.route == RouteChosen.General:
             self.create_management_case_procurement(wrapper)
         elif self.route == RouteChosen.Grants:
             self.create_management_case_grants(wrapper)

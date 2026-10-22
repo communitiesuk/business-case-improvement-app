@@ -48,7 +48,7 @@ procurement_answers_dict: dict = {
     is_this_request_a_pilot: "no",
     making_a_change_to_or_additional_money_for_existing_business_case: "no",
     where_is_the_budget_held: "Any Answer",
-    which_option_describes_what_you_are_trying_to_do: hire_contracted_workers_to_fill_temporary_capacity_gap,
+    which_option_describes_what_you_are_trying_to_do: procure_goods_and_services_from_third_party,
     which_best_describes_your_spend: "Any Answer",
     give_your_bjc_a_title: "Test BJC Title",
     provide_a_high_level_summary: "details"
@@ -140,9 +140,6 @@ def test_orchestrator_for_grants_route():
     # Act
     orc.populate_word_doc()
     doc = orc.wrapper.doc
-
-    p = doc.paragraphs[0]
-    r = p.runs[0]
 
     # Assert
     # if we made it to the formatting it has completed the creation
@@ -236,9 +233,6 @@ def test_orchestrator_for_general_something_else_route():
     # Act
     orc.populate_word_doc()
     doc = orc.wrapper.doc
-
-    p = doc.paragraphs[0]
-    r = p.runs[0]
 
     # Assert
     # if we made it to the formatting it has completed the creation

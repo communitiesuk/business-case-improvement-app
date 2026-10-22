@@ -409,3 +409,24 @@ def get_routing_exit_page(responses: list) -> str:
         result = ""
 
     return result
+
+
+def test_general_route_to_something_else():
+    # arrange
+    procurement_answers = [
+        "between-12k-and-2m",
+        "no",
+        "no",
+        "no",
+        "no", # 22
+        "Any Answer",
+        procuring_something_else, # 25
+        "title",
+        "details"
+    ]
+
+    # act
+    result = get_routing_exit_page(procurement_answers)
+
+    # assert
+    assert result == "general_exit_for_something_else"
