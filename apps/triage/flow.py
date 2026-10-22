@@ -30,7 +30,7 @@ Result pages are defined in RESULTS.
 QUESTIONS = [
     {
         "slug": total_value_of_business_case,
-        "title": "What is the estimated total value of your business case?",
+        "title": "What is the estimated total value of your proposal?",
         "type": "radio",
         "hint": '<div class="govuk-inset-text">This is the total cost of your proposal over its full lifetime, including VAT. Select one option:</div>',
         "choices": [
@@ -56,14 +56,34 @@ QUESTIONS = [
         """,
     },
     {
-        "slug": part_of_wider_programme_with_existing_fbc,
-        "title": "Is this request part of a wider programme with an existing FBC?",
+        "slug": changing_or_asking_for_additional_money_for_existing_business_case,
+        "title": "Are you making a change to, or asking for additional money for an existing business case?",
+        "hint":   Markup('<div class="govuk-inset-text">This includes requests to change the scope, timeline, costs, funding, deliverables or outcomes of an existing business case.</div>'),
         "type": "radio",
-        "help_text": "We ask this to make sure spend is routed through the correct approvals process. If this work is part of a wider piece of activity, or if multiple related pieces of spend together exceed approval thresholds, you should answer Yes, even if this individual business case is for a smaller amount.",
         "choices": [
             ("yes", "Yes"),
-            ("no", "No")
-        ]
+            ("no", "No"),
+            ("i-dont-know", "I don't know")
+        ],
+        "help_text": f"""
+            <p class="govuk-body">We ask this because changes to an existing approved business case may not require a completely new business case.</p>
+            <p class="govuk-body">In some cases, you may be able to update the existing business case and provide an addendum that explains the proposed changes.</p>
+            <p class="govuk-body">Select <strong>Yes</strong> if:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>you are requesting additional funding for an existing project or programme</li>
+                <li>you are changing the scope, timeline or outcomes of an approved business case</li>
+                <li>the work relates to an existing approved business case</li>
+                <li>you are updating an existing proposal rather than creating a new one</li>
+            </ul>
+            <p class="govuk-body">Select <strong>No</strong> if:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>this is a new proposal</li>
+                <li>the work is not covered by an existing approved business case</li>
+                <li>no previous approval has been given for the work</li>
+            </ul>
+            <p class="govuk-body"><strong>Not sure?</strong></p>
+            <p class="govuk-body">Speak to your Finance Business Partner (FBP), a Commercial colleague, or the project or programme owner before continuing.</p>
+        """
     },
     {
         "slug": does_request_involve_anything_digital,
@@ -127,17 +147,61 @@ QUESTIONS = [
     {
         "slug": making_a_change_to_or_additional_money_for_existing_business_case,
         "title": "Are you making a change to, or asking for additional money for an existing business case?",
+        "hint":   Markup('<div class="govuk-inset-text">This includes requests to change the scope, timeline, costs, funding, deliverables or outcomes of an existing business case.</div>'),
         "type": "radio",
-        "help_text": "We ask this to make sure spend is routed through the correct approvals process. If this work is part of a wider piece of activity, or if multiple related pieces of spend together exceed approval thresholds, you should answer Yes, even if this individual business case is for a smaller amount.",
-        "choices":[
+        "choices": [
             ("yes", "Yes"),
-            ("no", "No")
-        ]
+            ("no", "No"),
+            ("i-dont-know", "I don't know")
+        ],
+        "help_text": f"""
+            <p class="govuk-body">We ask this because changes to an existing approved business case may not require a completely new business case.</p>
+            <p class="govuk-body">In some cases, you may be able to update the existing business case and provide an addendum that explains the proposed changes.</p>
+            <p class="govuk-body">Select <strong>Yes</strong> if:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>you are requesting additional funding for an existing project or programme</li>
+                <li>you are changing the scope, timeline or outcomes of an approved business case</li>
+                <li>the work relates to an existing approved business case</li>
+                <li>you are updating an existing proposal rather than creating a new one</li>
+            </ul>
+            <p class="govuk-body">Select <strong>No</strong> if:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>this is a new proposal</li>
+                <li>the work is not covered by an existing approved business case</li>
+                <li>no previous approval has been given for the work</li>
+            </ul>
+            <p class="govuk-body"><strong>Not sure?</strong></p>
+            <p class="govuk-body">Speak to your Finance Business Partner (FBP), a Commercial colleague, or the project or programme owner before continuing.</p>
+        """
     },
     {
         "slug": any_other_business_cases_that_are_connected_to_this_work,
-        "title": "Are there any other business cases that are in draft or review connected to this work or initiative?",
+        "title": "Is anyone else working on a related business case?",
         "type": "radio",
+        "hint": f"""
+            <div class="govuk-inset-text">
+                <p class="govuk-!-margin-bottom-2">This could be work that:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>supports the same project or programme</li>
+                    <li>contributes to the same outcomes</li>
+                    <li>forms part of the same overall piece of work</li>
+                    <li>is being developed by another team</li>
+                </ul>
+            </div>
+            """,
+        "help_text": f"""
+            <p class="govuk-body">We ask this because there may be several business cases linked to the same piece of work.</p>
+            <p class="govuk-body">Understanding these connections helps reviewers:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>understand the full scope of the work</li>
+                <li>identify dependencies between projects</li>
+                <li>understand the total expected investment</li>
+                <li>assess whether related business cases should be considered together</li>
+            </ul>
+            <p class="govuk-body">Select <strong>Yes</strong> if you know of any related business cases, even if they are owned or being developed by another team.</p>
+            <p class="govuk-body"><strong>Not sure?</strong></p>
+            <p class="govuk-body">If you think there may be related business cases, select <strong>Yes</strong> and provide any information you have when drafting the business case. You do not need to know all the details.</p>
+        """,
         "choices":[
             ("yes", "Yes"),
             ("no", "No")
@@ -398,8 +462,8 @@ QUESTIONS = [
         "slug": is_this_request_a_pilot_notice,
         "title": 'What you need to know',
         "type": "notice",
-        "content": f"""<p>Before you start drafting a business case, <a class="govuk-link" href="{external_links('').get("links", {}).get("subject_matter_expert_assurance", "")}" target="_blank" rel="noopener noreferrer">speak to your <strong>Finance Business Partner (FBP)</strong></a> and/or a <strong>Commercial colleague</strong>.</p>
-        <p>Your proposal is likely to need the standard 3-stage business case process. It may also need approval from the Investment Sub-Committee (ISC) and, in some cases, His Majesty’s Treasury (HM Treasury).</p>
+        "content": f"""<p>Before you start drafting a business case, speak to your <strong>Finance Business Partner (FBP)</strong> and/or a <strong>Commercial colleague</strong>.</p>
+        <p>Your proposal is likely to need the standard 3-stage business case process. It may also need approval from the Investment Sub-Committee (ISC) and, in some cases, His Majesty's Treasury (HM Treasury).</p>
         <p>The template you need depends on the stage your proposal has reached. This could be a:</p>
         <ul class="govuk-list govuk-list--bullet">
             <li>Project Brief</li>
@@ -408,7 +472,8 @@ QUESTIONS = [
             <li>Full Business Case (FBC)</li>
         </ul>
         <p>If you are not sure which template to use, speak to your FBP, Commercial colleague or the ISC Secretariat.</p>
-        <p><a class="govuk-link" href="{external_links('').get("links", {}).get("template_library", "")}" target="_blank" rel="noopener noreferrer">If you know which template you need</a>, select <strong>Continue</strong>.</p>  
+        <p>If you know you need to do a 3-stage business case, download the template <a class="govuk-link" href="{external_links('').get("links", {}).get("project_delivery_hub", "")}" target="_blank" rel="noopener noreferrer">here</a>
+        <p>If you know you need to do a Business Justification case, select <strong>Continue</strong>.</p>
         """,
         "help_title": "Why am I seeing this message?",
         "help_text": """
@@ -704,11 +769,12 @@ QUESTIONS = [
 
 ROUTING = {
     # work-type branches first
-    (total_value_of_business_case, AnswerConstants.BELOW_12K): part_of_wider_programme_with_existing_fbc,
+    (total_value_of_business_case, AnswerConstants.BELOW_12K): changing_or_asking_for_additional_money_for_existing_business_case,
     (total_value_of_business_case, AnswerConstants.BETWEEN_12K_AND_2M): novel_repercussive_contentious_hmt_consent,
     (total_value_of_business_case, AnswerConstants.ABOVE_2M): "calculate-result",
-    (part_of_wider_programme_with_existing_fbc, "yes"): "calculate-result",
-    (part_of_wider_programme_with_existing_fbc, "no"): does_request_involve_anything_digital,
+    (changing_or_asking_for_additional_money_for_existing_business_case, "yes"): "calculate-result",
+    (changing_or_asking_for_additional_money_for_existing_business_case, "no"): does_request_involve_anything_digital,
+    (changing_or_asking_for_additional_money_for_existing_business_case, "i-dont-know"): does_request_involve_anything_digital,
     (does_request_involve_anything_digital, "yes"): "calculate-result",
     (does_request_involve_anything_digital, "no"): "calculate-result",
     (novel_repercussive_contentious_hmt_consent, "no"): is_this_request_a_pilot,
@@ -716,11 +782,12 @@ ROUTING = {
     (novel_repercussive_contentious_hmt_consent, "*"): novel_repercussive_contentious_hmt_consent_notice,
     (novel_repercussive_contentious_hmt_consent_notice, "*"): "calculate-result",
     (is_this_request_a_pilot, "yes"): is_this_request_a_pilot_notice,
-    (is_this_request_a_pilot_notice, "*"): "calculate-result",
+    (is_this_request_a_pilot_notice, "*"): making_a_change_to_or_additional_money_for_existing_business_case,
     (is_this_request_a_pilot, "no"): making_a_change_to_or_additional_money_for_existing_business_case,
     (making_a_change_to_or_additional_money_for_existing_business_case, "yes"): is_this_request_part_of_a_wider_programme_with_existing_business_case_notice,
     (is_this_request_part_of_a_wider_programme_with_existing_business_case_notice, "*"): any_other_business_cases_that_are_connected_to_this_work,
     (making_a_change_to_or_additional_money_for_existing_business_case, "no"): any_other_business_cases_that_are_connected_to_this_work,
+    (making_a_change_to_or_additional_money_for_existing_business_case, "i-dont-know"): any_other_business_cases_that_are_connected_to_this_work,
     (any_other_business_cases_that_are_connected_to_this_work, "*"): where_is_the_budget_held,
     (any_other_business_cases_that_are_connected_to_this_work, "yes"): any_other_business_cases_that_are_connected_to_this_work_notice,
     (any_other_business_cases_that_are_connected_to_this_work_notice, "*"): where_is_the_budget_held,
