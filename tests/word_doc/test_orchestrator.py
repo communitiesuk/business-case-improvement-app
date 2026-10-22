@@ -95,9 +95,6 @@ def test_orchestrator_for_procurement_route():
     orc.populate_word_doc()
     doc = orc.wrapper.doc
 
-    p = doc.paragraphs[0]
-    r = p.runs[0]
-
     # Assert
     # if we made it to the formatting it has completed the creation
     for s in doc.sections:
@@ -193,9 +190,6 @@ def test_orchestrator_for_general_hrbp_route():
     orc.populate_word_doc()
     doc = orc.wrapper.doc
 
-    p = doc.paragraphs[0]
-    r = p.runs[0]
-
     # Assert
     # if we made it to the formatting it has completed the creation
     for s in doc.sections:
@@ -270,8 +264,6 @@ def test_orchestrator_for_general_something_else_route():
     assert len(procurement_headers) == 0
 
 
-
-
 def test_orchestrator_for_general_corporate_spend_route():
     # Arrange
     procurement_headers: list = [
@@ -295,9 +287,6 @@ def test_orchestrator_for_general_corporate_spend_route():
     orc.populate_word_doc()
     doc = orc.wrapper.doc
 
-    p = doc.paragraphs[0]
-    r = p.runs[0]
-
     # Assert
     # if we made it to the formatting it has completed the creation
     for s in doc.sections:
@@ -320,6 +309,4 @@ def test_orchestrator_for_general_corporate_spend_route():
                 procurement_headers.remove(p.text)
 
     assert len(procurement_headers) == 0
-
-
 
