@@ -1,6 +1,7 @@
 from enum import Enum
 from .slugs import *
 from apps.triage.triage_data import TriageData
+from apps.triage.triage_data import TriageData
 
 # because routing requires very specific checks, setting here to reduce likelihood of unknowing changes
 class AnswerConstants(str, Enum):
