@@ -60,7 +60,7 @@ def determine_is_less_than_12k_exit_route(triage_data: TriageData) -> str:
 def get_procurement_exit(triage_data: TriageData) -> str:
     
     if triage_data.where_is_the_budget_held == AnswerConstants.DIGITAL_STRING.value:
-        return "procurement-route-digital-spend"
+        return "digital-exit-for-procurement-route"
 
     return "exit-to-download-template-procurement-route"
 

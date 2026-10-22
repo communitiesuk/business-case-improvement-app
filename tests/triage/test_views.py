@@ -109,7 +109,7 @@ def test_procurement_template_exit_loads(client):
 
 def test_procurement_route_digital_spend_page_loads(client):
     resp = client.get(
-        reverse("triage:result", kwargs={"slug": "procurement_route_digital_spend"})
+        reverse("triage:result", kwargs={"slug": "digital-exit-for-procurement-route"})
     )
     assert resp.status_code == 200
 

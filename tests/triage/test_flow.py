@@ -257,7 +257,7 @@ def test_procurement_routes_including_digital_routes_through_digital_path():
     result = get_routing_exit_page(procurement_answers)
 
     # assert
-    assert result == "procurement_route_digital_spend"
+    assert result == "digital-exit-for-procurement-route"
 
 
 def test_3_stage_process_for_novel():
