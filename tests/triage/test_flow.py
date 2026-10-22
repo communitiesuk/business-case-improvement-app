@@ -178,9 +178,7 @@ def test_procurement_routes_to_fbp():
         "no",
         "no",
         "no", # 22
-        "no", # 22
         "Any Answer",
-        procure_goods_and_services_from_third_party, # 25
         procure_goods_and_services_from_third_party, # 25
         spend_on_corporate_activities,
         "title",
